@@ -25,6 +25,9 @@ package-lock.json
 /build
 /dist/*.js
 
+# data
+/data/*
+
 # misc
 .DS_Store
 *.pem
