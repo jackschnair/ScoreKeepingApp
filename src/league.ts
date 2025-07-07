@@ -6,7 +6,7 @@ import { Scorekeeper } from "./scorekeeper";
 export class League {
 
     protected name: string;
-    protected game: string;
+    protected sport: string;
     protected date_created: Date
     //protected schedule: Game[];
     protected credentials!: string
@@ -14,11 +14,27 @@ export class League {
     //protected game_rules
 
 
-    constructor(name: string, game: string ) {
+    constructor(name: string, sport: string ) {
         this.name = name;
-        this.game = game;
+        this.sport = sport;
         this.date_created = new Date()
 
     }
 
+    // genereated using GPT
+    public toJSON(): object {
+        return {
+            name: this.name,
+            sport: this.sport,
+            date_created: this.date_created.toISOString(),
+            //protected schedule: Game[];
+            credentials: this.credentials,
+            registered_scorekeeprs: this.registered_scorekeeprs
+            //protected game_rules
+        };
+    }
+
+
+
+    
 }
