@@ -34,3 +34,35 @@ export function createLeague(name: string, sport: string): League {
 
     return newLeague
 }
+
+// remove league from storage json file
+export function deleteLeague(name: string): Boolean {
+
+    const leagueFileName: string = 'leagueStorage.json'
+    const leagueFilePath: string = path.join(__dirname, '..', 'data', leagueFileName)
+
+    if (existsSync(leagueFilePath)) {
+        const fileContents:string = readFileSync(leagueFilePath, 'utf-8')
+
+        let leagues: any[] = JSON.parse(fileContents)
+        let filteredLeagues = leagues.filter(league => league.name !== name)
+        const jsonString: string = JSON.stringify(filteredLeagues)
+
+        try {
+            writeFileSync(leagueFilePath, jsonString, 'utf-8');
+            console.log(`File written successfully to ${leagueFilePath}`);
+
+        } catch (error) {
+            throw Error('Error writing file')
+            return false
+        }
+    } else {
+        throw Error ("There are no leagues on record")
+        return false
+    }
+
+
+   
+
+    return true
+}
