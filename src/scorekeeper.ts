@@ -14,6 +14,14 @@ export class Scorekeeper {
         this.registration_status = false;
     }
 
-
+    // Convert scorekeeper data to JSON format
+    public toJSON(): object {
+        return {
+            name: this.name,
+            credentials: this.credentials,
+            league: this.league,
+            registration_status: this.registration_status
+        };
+    }
 
 }
