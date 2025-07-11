@@ -3,6 +3,7 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import * as path from 'path';
 import { Scorekeeper } from "./scorekeeper";
+import { Game } from './game';
 
 
 export class League {
@@ -12,7 +13,7 @@ export class League {
     protected date_created: Date
     //protected schedule: Game[];
     protected credentials!: string
-    protected registered_scorekeeprs!: Scorekeeper[];
+    protected registered_scorekeeprs!: Scorekeeper[]; //scorekeeprs or scorekeepers?
     //protected game_rules
 
 
@@ -94,5 +95,82 @@ export class League {
         return scorekeeper;
     }
 
+    // create new Game and append to gameStorage.json
+    public createGame(id: string, date: Date, location: string): Game {
+        // initialize game
+        const newGame = new Game(id, date, this.name, location);
+        const jsonGame = newGame.toJSON();
+
+        const gameFileName = 'gameStorage.json';
+        const gameFilePath = path.join(__dirname, '..', 'data', gameFileName);
+
+        // create array of game objects
+        let games: object[];
+
+        // check if game file exists and read or create new
+        if (existsSync(gameFilePath)) {
+            const fileContents = readFileSync(gameFilePath, 'utf-8');
+            games = JSON.parse(fileContents);
+
+            // append new game to existing array
+            games.push(jsonGame);
+        } else {
+            games = [jsonGame];
+        }
+
+        // write updated list to file
+        const jsonString = JSON.stringify(games, null, 2);
+
+        try {
+            writeFileSync(gameFilePath, jsonString, 'utf-8');
+            console.log(`Game file written successfully to ${gameFilePath}`);
+        } catch (error) {
+            throw Error('Error writing game file');
+        }
+
+        return newGame;
+    }
+
+    // remove game from gameStorage.json
+    public deleteGame(gameId: string): boolean {
+        const gameFileName: string = 'gameStorage.json';
+        const gameFilePath: string = path.join(__dirname, '..', 'data', gameFileName);
+
+        if (!existsSync(gameFilePath)) {
+            throw new Error("No games on record");
+        }
+
+        const fileContents: string = readFileSync(gameFilePath, 'utf-8');
+        let games: any[] = JSON.parse(fileContents);
+
+        // filter out the game by ID
+        const filteredGames = games.filter(game => !(game.id === gameId && game.league === this.name));
+
+        // check if anything was actually removed
+        if (filteredGames.length === games.length) {
+            console.warn(`No game with ID "${gameId}" found.`)
+            return false;
+        }
+
+        // save updated game list
+        const jsonString: string = JSON.stringify(filteredGames, null, 2);
+
+        try {
+            writeFileSync(gameFilePath, jsonString, 'utf-8');
+            console.log(`Game with ID "${gameId}" deleted successfully.`);
+            return true;
+
+        } catch (error) {
+            throw new Error('Error writing game file');
+        }
+    }
+
     
 }
+
+
+
+
+
+
+        
