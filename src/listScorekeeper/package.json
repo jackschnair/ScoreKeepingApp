@@ -1,0 +1,9 @@
+{
+  "name": "listScorekeeper",
+  "version": "1.0.0",
+  
+  "dependencies": {
+    "mysql": "^2.18.1"
+  }
+
+}

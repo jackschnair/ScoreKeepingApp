@@ -46,7 +46,6 @@ export async function handler(event) {
     return {
       statusCode: 200,
       body: JSON.stringify({ 
-        message: 'Leagues retrieved successfully',
         count: leagues.length,
         leagues: leagues 
       }),
@@ -56,7 +55,7 @@ export async function handler(event) {
     console.error('Error:', error);
     return {
       statusCode: 400,
-      body: JSON.stringify({ message: 'Error retrieving leagues', error: error.message }),
+      body: JSON.stringify({ error: error.message }),
     };
   }
 }

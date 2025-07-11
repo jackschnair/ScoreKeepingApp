@@ -15,8 +15,8 @@ function queryAsync(connection, sql, params) {
 }
 
 /**
- * AWS Lambda handler for listing all leagues.
- * Returns all leagues and their information from the database.
+ * AWS Lambda handler for listing all games.
+ * Returns all games and their information from the database.
  */
 export async function handler(event) {
   let connection;
@@ -34,10 +34,10 @@ export async function handler(event) {
       connection.connect(err => (err ? reject(err) : resolve()));
     });
 
-    // Select all leagues from the database
-    const leagues = await queryAsync(
+    // Select all games from the database
+    const games = await queryAsync(
       connection,
-      'SELECT name, sport FROM leagues',
+      'SELECT id, date, league, location, home_team, away_team, home_score, away_score, finalized FROM games',
       []
     );
 
@@ -46,9 +46,8 @@ export async function handler(event) {
     return {
       statusCode: 200,
       body: JSON.stringify({ 
-        message: 'Leagues retrieved successfully',
-        count: leagues.length,
-        leagues: leagues 
+        count: games.length,
+        games: games 
       }),
     };
   } catch (error) {
@@ -56,7 +55,7 @@ export async function handler(event) {
     console.error('Error:', error);
     return {
       statusCode: 400,
-      body: JSON.stringify({ message: 'Error retrieving leagues', error: error.message }),
+      body: JSON.stringify({ error: error.message }),
     };
   }
 }

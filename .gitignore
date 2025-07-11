@@ -33,6 +33,12 @@ package-lock.json
 /src/createScorekeeper/node_modules
 /src/registerScorekeeper/node_modules
 /src/deleteLeague/node_modules
+/src/listGames/node_modules
+/src/listLeague/node_modules
+/src/listScorekeeper/node_modules
+/src/createGame/node_modules
+/src/deleteGame/node_modules
+
 
 # misc
 .DS_Store
