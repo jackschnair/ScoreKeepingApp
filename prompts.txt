@@ -1,0 +1,7 @@
+Creating "createLeague" lambda function prompts:
+
+1. I would like to write an aws lambda function that recieves arguments for 'name', 'sport',  and 'credentials'. These arguments will be written to a mysql aws database. credentials should be hashed rather than in plaintext. Return a 200 code if it worked and 400 if there was an error
+2. information from db host should be gotten from config.mjs in the same directory
+3. can you write this file to work for .mjs
+
+notes: Wierdly insistent that I was trying to create a scorekeeper instead of a league, even after I corrected.

@@ -2,8 +2,8 @@
 
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import * as path from 'path';
-import { Scorekeeper } from "./scorekeeper";
 import { Game } from './game';
+import { Scorekeeper } from "./scorekeeper";
 
 
 export class League {
@@ -13,7 +13,7 @@ export class League {
     protected date_created: Date
     //protected schedule: Game[];
     protected credentials!: string
-    protected registered_scorekeeprs!: Scorekeeper[]; //scorekeeprs or scorekeepers?
+    protected registered_scorekeepers!: Scorekeeper[]; //scorekeepers or scorekeepers?
     //protected game_rules
 
 
@@ -32,7 +32,7 @@ export class League {
             date_created: this.date_created.toISOString(),
             //protected schedule: Game[];
             credentials: this.credentials,
-            registered_scorekeeprs: this.registered_scorekeeprs
+            registered_scorekeepers: this.registered_scorekeepers
             //protected game_rules
         };
     }

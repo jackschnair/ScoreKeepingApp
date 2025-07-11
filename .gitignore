@@ -28,6 +28,9 @@ package-lock.json
 # data
 /data/*
 
+#node moduels of various subdirectories
+/src/createLeague/node_modules
+
 # misc
 .DS_Store
 *.pem
