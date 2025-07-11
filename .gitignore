@@ -30,6 +30,9 @@ package-lock.json
 
 #node moduels of various subdirectories
 /src/createLeague/node_modules
+/src/createScorekeeper/node_modules
+/src/registerScorekeeper/node_modules
+/src/deleteLeague/node_modules
 
 # misc
 .DS_Store
