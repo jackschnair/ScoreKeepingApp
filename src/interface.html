@@ -30,8 +30,17 @@
   <form id="deleteLeagueForm">
     <h2>Delete League</h2>
     <label>League Name: <input name="name" required /></label>
+    <label>League: <input name="league" required /></label>
+    <label>Credentials: <input name="credentials" required /></label>
     <button type="submit">Delete League</button>
     <div class="response" id="deleteLeagueResponse"></div>
+  </form>
+
+  <!-- LIST LEAGUES -->
+  <form id="listLeaguesForm">
+    <h2>List Leagues</h2>
+    <button type="submit">List All Leagues</button>
+    <div class="response" id="listLeaguesResponse"></div>
   </form>
 
   <!-- CREATE GAME -->
@@ -42,6 +51,9 @@
     <label>Home Team: <input name="home_team" required /></label>
     <label>Away Team: <input name="away_team" required /></label>
     <label>Location: <input name="location" required /></label>
+    <label>Date and Time (YYYY-MM-DD HH:MM:SS):
+      <input name="date" required placeholder="2024-07-01 18:30:00" />
+    </label>
     <button type="submit">Create Game</button>
     <div class="response" id="createGameResponse"></div>
   </form>
@@ -55,11 +67,18 @@
     <div class="response" id="deleteGameResponse"></div>
   </form>
 
+  <!-- LIST GAMES -->
+  <form id="listGamesForm">
+    <h2>List Games</h2>
+    <button type="submit">List All Games</button>
+    <div class="response" id="listGamesResponse"></div>
+  </form>
+
   <!-- CREATE SCOREKEEPER -->
   <form id="createScorekeeperForm">
     <h2>Create Scorekeeper</h2>
     <label>Scorekeeper Name: <input name="name" required /></label>
-    <label>League: <input name="league" required /></label>
+    <!-- <label>League: <input name="league" required /></label> -->
     <label>Credentials: <input name="credentials" required /></label>
     <button type="submit">Create Scorekeeper</button>
     <div class="response" id="createScorekeeperResponse"></div>
@@ -69,12 +88,21 @@
   <form id="registerScorekeeperForm">
     <h2>Register Scorekeeper</h2>
     <label>Scorekeeper Name: <input name="name" required /></label>
+    <label>League: <input name="league" required /></label>
     <button type="submit">Register Scorekeeper</button>
     <div class="response" id="registerScorekeeperResponse"></div>
   </form>
 
+  <!-- LIST SCOREKEEPERS -->
+  <form id="listScorekeepersForm">
+    <h2>List Scorekeepers</h2>
+    <button type="submit">List All Scorekeepers</button>
+    <div class="response" id="listScorekeepersResponse"></div>
+  </form>
+
+
   <script>
-    async function submitForm(formId, apiUrl, responseId) {
+    async function submitForm(formId, apiUrl, responseId, method = 'POST') {
       const form = document.getElementById(formId);
       const responseDiv = document.getElementById(responseId);
 
@@ -84,11 +112,17 @@
         const data = Object.fromEntries(formData.entries());
 
         try {
-          const res = await fetch(apiUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-          });
+          let requestOptions = {
+            method: method,
+            headers: { 'Content-Type': 'application/json' }
+          };
+          
+          // For GET requests, don't send a body
+          if (method !== 'GET' && Object.keys(data).length > 0) {
+            requestOptions.body = JSON.stringify(data);
+          }
+
+          const res = await fetch(apiUrl, requestOptions);
 
           const result = await res.json();
           responseDiv.textContent = JSON.stringify(result, null, 2);
@@ -105,6 +139,9 @@
     submitForm('deleteGameForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/deleteGame', 'deleteGameResponse');
     submitForm('createScorekeeperForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/createScorekeeper', 'createScorekeeperResponse');
     submitForm('registerScorekeeperForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/registerScorekeeper', 'registerScorekeeperResponse');
+    submitForm('listLeaguesForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/listLeagues', 'listLeaguesResponse', 'GET');
+    submitForm('listGamesForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/listGames', 'listGamesResponse', 'GET');
+    submitForm('listScorekeepersForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/listScorekeepers', 'listScorekeepersResponse', 'GET');
   </script>
 </body>
 </html>
