@@ -21,9 +21,9 @@ function queryAsync(connection, sql, params) {
 export async function handler(event) {
   let connection;
   try {
-    const { name, league, credentials } = event || {};
+    const { name, credentials } = event || {};
 
-    if (!name || !league || !credentials) {
+    if (!name || !credentials) {
       return {
         statusCode: 400,
         body: JSON.stringify({ message: 'Missing required fields' }),
@@ -52,8 +52,8 @@ export async function handler(event) {
     // Insert into leagues table (credentials in plaintext)
     await queryAsync(
       connection,
-      'INSERT INTO scorekeepers (name, league, credentials, registration_status) VALUES (?, ?, ?, 0)',
-      [name, league, credentials, 0]
+      'INSERT INTO scorekeepers (name, league, credentials, registration_status) VALUES (?, ?, ?, ?)',
+      [name, "", credentials, 0]
     );
 
     connection.end();

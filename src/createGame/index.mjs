@@ -34,14 +34,24 @@ export async function handler(event) {
     } = event || {};
 
     // Validate required fields
-    if (!id || !league || !home_team || !away_team || !location) {
+    if (!id || !date || !league || !home_team || !away_team || !location) {
       return {
         statusCode: 400,
         body: JSON.stringify({ message: 'Missing required fields' }),
       };
     }
 
-    const gameDate = date ? new Date(date) : new Date();
+    // Validate date format: YYYY-MM-DD HH:MM:SS
+    const dateTimeRegex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
+    if (!dateTimeRegex.test(date)) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: 'Date must be in YYYY-MM-DD HH:MM:SS format' }),
+      };
+    }
+
+    // Use the provided date string directly (or parse if needed)
+    const gameDate = date;
 
     // Connect to MySQL
     connection = mysql.createConnection({

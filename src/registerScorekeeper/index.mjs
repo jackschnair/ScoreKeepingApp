@@ -22,12 +22,12 @@ function queryAsync(connection, sql, params) {
 export async function handler(event) {
   let connection;
   try {
-    const { name } = event || {};
+    const { name, league } = event || {};
 
-    if (!name) {
+    if (!name || !league) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ message: 'Missing required field: name' }),
+        body: JSON.stringify({ message: 'Missing required field: name or league' }),
       };
     }
 
@@ -44,11 +44,11 @@ export async function handler(event) {
       connection.connect(err => (err ? reject(err) : resolve()));
     });
 
-    // Update scorekeeper registration_status from 0 to 1 using only name
+    // Update scorekeeper registration_status from 0 to 1 and set league using only name
     const result = await queryAsync(
       connection,
-      'UPDATE scorekeepers SET registration_status = 1 WHERE name = ?',
-      [name]
+      'UPDATE scorekeepers SET registration_status = 1, league = ? WHERE name = ?',
+      [league, name]
     );
 
     connection.end();

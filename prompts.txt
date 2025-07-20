@@ -14,5 +14,12 @@ notes: I had to add the registration_status part myself.
     I suppose I could have made it the defualt in the database instead.
     It also assumed the wrong inputs.
 
+Creating "registerScorekeeper" prompts: 
+1. change this file so that instead of registering a scorekeeper, it just changes a scorekeeprs registration status from 0 to 1 using the scorekeeprs name as a parameter.
+
+Revising deleteLeauge based on iteration one notes prompt: 
+1. I would like to change this file so that credentials are a required field and in order for the DELETE SQL query to run, the credientials must match the league's credentials in the database
+note: This worked even better than I expected because it generated the proper status codes 403 and 404 for forbidden and not found. I didn't know there were specific sub error status codes and learned something new.
+
 
 
