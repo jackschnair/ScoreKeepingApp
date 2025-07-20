@@ -2,6 +2,7 @@
 
 import { Scorekeeper } from "./scorekeeper";
 
+
 export class Game {
 
     protected id: string;
@@ -36,5 +37,4 @@ export class Game {
         this.location = location
         this.finalized = false;
     }
-
 }

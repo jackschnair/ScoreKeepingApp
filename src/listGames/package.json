@@ -1,5 +1,5 @@
 {
-  "name": "deleteLeague",
+  "name": "listGames",
   "version": "1.0.0",
   
   "dependencies": {
