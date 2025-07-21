@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Scorekeeping Admin</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    
+    /* Navigation Styles */
+    .nav-container {
+      background: #2c3e50;
+      padding: 15px 0;
+      margin-bottom: 30px;
+      border-radius: 8px;
+    }
+    
+    .nav-dropdown {
+      position: relative;
+      display: inline-block;
+      margin-left: 20px;
+    }
+    
+    .nav-dropdown-btn {
+      background: #3498db;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+    
+    .nav-dropdown-btn:hover {
+      background: #2980b9;
+    }
+    
+    .nav-dropdown-content {
+      display: none;
+      position: absolute;
+      background: white;
+      min-width: 200px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      z-index: 1;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    
+    .nav-dropdown-content a {
+      color: #333;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      transition: background 0.3s;
+    }
+    
+    .nav-dropdown-content a:hover {
+      background: #f1f1f1;
+    }
+    
+    .nav-dropdown:hover .nav-dropdown-content {
+      display: block;
+    }
+    
+    .nav-title {
+      color: white;
+      margin-left: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    
+    form { margin-bottom: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+    label { display: block; margin-top: 10px; }
+    input, select { width: 300px; padding: 5px; }
+    button { margin-top: 15px; padding: 10px 20px; }
+    .response { margin-top: 10px; font-weight: bold; color: #444; }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Dropdown -->
+  <div class="nav-container">
+    <span class="nav-title">Scorekeeping System</span>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-btn">Navigate to Pages ▼</button>
+      <div class="nav-dropdown-content">
+        <a href="interface.html">Home</a>
+        <a href="iteration_one.html">Iteration 1</a>
+        <a href="iteration_two.html">Iteration 2</a>
+        <a href="admin.html">Admin use cases</a>
+        <a href="league.html">League use cases</a>
+        <a href="scorekeeper.html">Scorekeeper use cases</a>
+        <a href="consumer.html">Consumer use cases</a>
+      </div>
+    </div>
+  </div>
+
+  <h1>Iteration 1 use cases</h1>
+
+  <!-- CREATE LEAGUE -->
+  <form id="createLeagueForm">
+    <h2>Create League</h2>
+    <label>League Name: <input name="name" required /></label>
+    <label>Sport: <input name="sport" required /></label>
+    <label>Credentials: <input name="credentials" required /></label>
+    <button type="submit">Create League</button>
+    <div class="response" id="createLeagueResponse"></div>
+  </form>
+
+  <!-- DELETE LEAGUE -->
+  <form id="deleteLeagueForm">
+    <h2>Delete League</h2>
+    <label>League Name: <input name="name" required /></label>
+    <label>Credentials: <input name="credentials" required /></label>
+    <button type="submit">Delete League</button>
+    <div class="response" id="deleteLeagueResponse"></div>
+  </form>
+
+  <!-- LIST LEAGUES -->
+  <form id="listLeaguesForm">
+    <h2>List Leagues</h2>
+    <button type="submit">List All Leagues</button>
+    <div class="response" id="listLeaguesResponse"></div>
+  </form>
+
+  <!-- CREATE GAME -->
+  <form id="createGameForm">
+    <h2>Create Game</h2>
+    <label>Game ID: <input name="id" required /></label>
+    <label>League: <input name="league" required /></label>
+    <label>Home Team: <input name="home_team" required /></label>
+    <label>Away Team: <input name="away_team" required /></label>
+    <label>Location: <input name="location" required /></label>
+    <label>Date and Time (YYYY-MM-DD HH:MM:SS):
+      <input name="date" required placeholder="2024-07-01 18:30:00" />
+    </label>
+    <button type="submit">Create Game</button>
+    <div class="response" id="createGameResponse"></div>
+  </form>
+
+  <!-- DELETE GAME -->
+  <form id="deleteGameForm">
+    <h2>Delete Game</h2>
+    <label>Game ID: <input name="id" required /></label>
+    <label>League: <input name="league" required /></label>
+    <button type="submit">Delete Game</button>
+    <div class="response" id="deleteGameResponse"></div>
+  </form>
+
+  <!-- LIST GAMES -->
+  <form id="listGamesForm">
+    <h2>List Games</h2>
+    <button type="submit">List All Games</button>
+    <div class="response" id="listGamesResponse"></div>
+  </form>
+
+  <!-- CREATE SCOREKEEPER -->
+  <form id="createScorekeeperForm">
+    <h2>Create Scorekeeper</h2>
+    <label>Scorekeeper Name: <input name="name" required /></label>
+    <!-- <label>League: <input name="league" required /></label> -->
+    <label>Credentials: <input name="credentials" required /></label>
+    <button type="submit">Create Scorekeeper</button>
+    <div class="response" id="createScorekeeperResponse"></div>
+  </form>
+
+  <!-- REGISTER SCOREKEEPER -->
+  <form id="registerScorekeeperForm">
+    <h2>Register Scorekeeper</h2>
+    <label>Scorekeeper Name: <input name="name" required /></label>
+    <label>League: <input name="league" required /></label>
+    <button type="submit">Register Scorekeeper</button>
+    <div class="response" id="registerScorekeeperResponse"></div>
+  </form>
+
+  <!-- LIST SCOREKEEPERS -->
+  <form id="listScorekeepersForm">
+    <h2>List Scorekeepers</h2>
+    <button type="submit">List All Scorekeepers</button>
+    <div class="response" id="listScorekeepersResponse"></div>
+  </form>
+
+
+  <script>
+    async function submitForm(formId, apiUrl, responseId, method = 'POST') {
+      const form = document.getElementById(formId);
+      const responseDiv = document.getElementById(responseId);
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+          let requestOptions = {
+            method: method,
+            headers: { 'Content-Type': 'application/json' }
+          };
+          
+          // For GET requests, don't send a body
+          if (method !== 'GET' && Object.keys(data).length > 0) {
+            requestOptions.body = JSON.stringify(data);
+          }
+
+          const res = await fetch(apiUrl, requestOptions);
+
+          const result = await res.json();
+          responseDiv.textContent = JSON.stringify(result, null, 2);
+        } catch (err) {
+          responseDiv.textContent = `Error: ${err.message}`;
+        }
+      });
+    }
+
+    // Hook each form to its placeholder API URL
+    submitForm('createLeagueForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/createLeague', 'createLeagueResponse');
+    submitForm('deleteLeagueForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/deleteLeague', 'deleteLeagueResponse');
+    submitForm('createGameForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/createGame', 'createGameResponse');
+    submitForm('deleteGameForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/deleteGame', 'deleteGameResponse');
+    submitForm('createScorekeeperForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/createScorekeeper', 'createScorekeeperResponse');
+    submitForm('registerScorekeeperForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/registerScorekeeper', 'registerScorekeeperResponse');
+    submitForm('listLeaguesForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/listLeagues', 'listLeaguesResponse', 'GET');
+    submitForm('listGamesForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/listGames', 'listGamesResponse', 'GET');
+    submitForm('listScorekeepersForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/listScorekeepers', 'listScorekeepersResponse', 'GET');
+  </script>
+</body>
+</html>
