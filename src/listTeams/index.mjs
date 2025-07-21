@@ -15,23 +15,12 @@ function queryAsync(connection, sql, params) {
 }
 
 /**
- * AWS Lambda handler for creating a scorekeeper.
- * Expects event with: name, sport, credentials as top-level properties.
+ * AWS Lambda handler for listing all teams.
+ * Returns all teams and their information from the database.
  */
 export async function handler(event) {
   let connection;
   try {
-    const { name, credentials } = event || {};
-
-    if (!name || !credentials) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ message: 'Missing required fields' }),
-      };
-    }
-
-    console.log("Connecting to host:", config.host);
-
     // Connect to MySQL using config.mjs
     connection = mysql.createConnection({
       host: config.host,
@@ -40,34 +29,33 @@ export async function handler(event) {
       database: config.database,
     });
 
-    console.log("Connection created");
-
     // Promisify connection.connect
     await new Promise((resolve, reject) => {
       connection.connect(err => (err ? reject(err) : resolve()));
     });
 
-    console.log("Connection established");
-
-    // Insert into leagues table (credentials in plaintext)
-    await queryAsync(
+    // Select all teams from the database
+    const teams = await queryAsync(
       connection,
-      'INSERT INTO scorekeepers (name, league, credentials, registration_status) VALUES (?, ?, ?, ?)',
-      [name, "", credentials, 0]
+      'SELECT name, league, location FROM teams',
+      []
     );
 
     connection.end();
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: 'scorekeeper created successfully' }),
+      body: JSON.stringify({ 
+        count: teams.length,
+        teams: teams 
+      }),
     };
   } catch (error) {
     if (connection) connection.end();
     console.error('Error:', error);
     return {
       statusCode: 400,
-      body: JSON.stringify({ message: 'Error creating scorekeeper', error: error.message }),
+      body: JSON.stringify({ error: error.message }),
     };
   }
 }

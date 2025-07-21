@@ -1,0 +1,223 @@
+commit fbac44346b774fa58f307d65cb2cdc6bef193195
+Author: jackschnair <12jack812@gmail.com>
+Date:   Fri Jul 11 17:38:36 2025 -0400
+
+    added list functions for testing
+
+ .gitignore                        |   6 ++++
+ src/createGame/createGame.zip     | Bin 339284 -> 0 bytes
+ src/deleteGame/deleteGame.zip     | Bin 337310 -> 0 bytes
+ src/deleteLeague/index.mjs        |  43 +++++++++----------------
+ src/deleteLeague/node_modules.zip | Bin 335981 -> 0 bytes
+ src/listGames/config.mjs          |   6 ++++
+ src/listGames/index.mjs           |  63 +++++++++++++++++++++++++++++++++++++
+ src/listGames/package.json        |   9 ++++++
+ src/listLeague/config.mjs         |   6 ++++
+ src/listLeague/index.mjs          |  63 +++++++++++++++++++++++++++++++++++++
+ src/listLeague/package.json       |   9 ++++++
+ src/listScorekeeper/config.mjs    |   6 ++++
+ src/listScorekeeper/index.mjs     |  64 ++++++++++++++++++++++++++++++++++++++
+ src/listScorekeeper/package.json  |   9 ++++++
+ 14 files changed, 256 insertions(+), 28 deletions(-)
+
+commit fe1ea1518283bb9a36de1d407a774b9483dcd51c
+Merge: c5e23ce 038e7cd
+Author: Graham, James  (901031018) <jgraham@wpi.edu>
+Date:   Fri Jul 11 21:25:14 2025 +0000
+
+    Merge branch 'league/update-use-cases' into 'main'
+    
+    League/update use cases
+    
+    See merge request jmschnair/superior-scorekeeping!2
+
+commit 038e7cd48505604461e17210aaa7406ac114915d
+Author: James Graham <jgraham@wpi.com>
+Date:   Fri Jul 11 17:23:45 2025 -0400
+
+    update createGame and deleteGame functionality, create interface HTML
+
+ src/createGame/config.mjs     |   6 +++
+ src/createGame/createGame.zip | Bin 0 -> 339284 bytes
+ src/createGame/index.mjs      |  97 +++++++++++++++++++++++++++++++++++++
+ src/createGame/package.json   |  10 ++++
+ src/deleteGame/deleteGame.zip | Bin 0 -> 337310 bytes
+ src/interface.html            | 110 ++++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 223 insertions(+)
+
+commit c5e23cec3a3daf574659c232c3a85fe4d05a7d0f
+Author: jackschnair <12jack812@gmail.com>
+Date:   Fri Jul 11 17:01:55 2025 -0400
+
+    added deleteLeague, createScorekeeper, and registerScorekeeper use cases
+
+ .gitignore                         |   3 ++
+ prompts.txt                        |  15 +++++++-
+ src/createScorekeeper/config.mjs   |   6 +++
+ src/createScorekeeper/index.mjs    |  75 ++++++++++++++++++++++++++++++++++++
+ src/createScorekeeper/package.json |   9 +++++
+ src/deleteLeague/config.mjs        |   6 +++
+ src/deleteLeague/index.mjs         |  77 +++++++++++++++++++++++++++++++++++++
+ src/deleteLeague/node_modules.zip  | Bin 0 -> 335981 bytes
+ src/deleteLeague/package.json      |   9 +++++
+ 9 files changed, 198 insertions(+), 2 deletions(-)
+
+commit 98aecaf038ef035df082c8e39fc751cbfb84c8f9
+Author: jackschnair <12jack812@gmail.com>
+Date:   Fri Jul 11 17:00:24 2025 -0400
+
+    added deleteLeague, createScorekeeper, and registerScorekeeper use cases
+
+ src/registerScorekeeper/config.mjs   |  6 +++
+ src/registerScorekeeper/index.mjs    | 78 ++++++++++++++++++++++++++++++++++++
+ src/registerScorekeeper/package.json |  9 +++++
+ 3 files changed, 93 insertions(+)
+
+commit c3d326a0a80d43f0ce92d804ed2b4b12e5013505
+Author: James Graham <jgraham@wpi.com>
+Date:   Fri Jul 11 15:58:23 2025 -0400
+
+    Add in functionality for deleteGame and changed file structure
+
+ src/deleteGame/config.mjs   |  6 ++++
+ src/deleteGame/index.mjs    | 71 +++++++++++++++++++++++++++++++++++++++++++++
+ src/deleteGame/package.json |  9 ++++++
+ 3 files changed, 86 insertions(+)
+
+commit eb21d737d6ee4ced973bcde34cd951666adcec0b
+Author: jackschnair <12jack812@gmail.com>
+Date:   Fri Jul 11 14:29:11 2025 -0400
+
+    added createLeague as lambda function
+
+ .gitignore                    |  3 ++
+ package.json                  |  1 +
+ prompts.txt                   |  7 ++++
+ src/createLeague/config.mjs   |  6 ++++
+ src/createLeague/index.mjs    | 75 +++++++++++++++++++++++++++++++++++++++++++
+ src/createLeague/package.json |  9 ++++++
+ src/league.ts                 |  6 ++--
+ 7 files changed, 104 insertions(+), 3 deletions(-)
+
+commit 01e2ea93e930fd555bc0a6c6a4d372b821373f3f
+Merge: 581d827 0a051d4
+Author: Schnair, Jack Michael (817962067) <jmschnair@wpi.edu>
+Date:   Fri Jul 11 16:25:04 2025 +0000
+
+    Merge branch 'league/use-cases' into 'main'
+    
+    Added createGame and deleteGame functionality to league class
+    
+    See merge request jmschnair/superior-scorekeeping!1
+
+commit 0a051d4fbb5aaac100d0fa130ff39638d90d3f4d
+Author: James Graham <jgraham@wpi.com>
+Date:   Fri Jul 11 01:40:12 2025 -0400
+
+    Added createGame and deleteGame functionality to league class
+
+ src/league.ts | 82 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 80 insertions(+), 2 deletions(-)
+
+commit 581d8277f0550ecdc21ee88d55ab4839a048bc05
+Author: jackschnair <12jack812@gmail.com>
+Date:   Tue Jul 8 19:58:51 2025 -0400
+
+    Wrote create, register, and unregister scorekeeper functions with the help of Cursor AI
+
+ src/admin.ts       | 78 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ src/index.ts       |  7 +++--
+ src/league.ts      | 58 ++++++++++++++++++++++++++++++++++++++++
+ src/scorekeeper.ts | 10 ++++++-
+ 4 files changed, 150 insertions(+), 3 deletions(-)
+
+commit 3f14b98887f7c81e4013f7ab9b34e3858885057d
+Merge: 1aa90b6 690e83e
+Author: jackschnair <12jack812@gmail.com>
+Date:   Mon Jul 7 19:15:12 2025 -0400
+
+    Merge branch 'main' of https://gitlab03.wpi.edu/jmschnair/superior-scorekeeping
+
+commit 1aa90b6d864b1363be1e68082695b8122e50c604
+Author: jackschnair <12jack812@gmail.com>
+Date:   Mon Jul 7 19:15:03 2025 -0400
+
+    Added "deleteLeague" functionality
+
+ src/admin.ts | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
+
+commit 690e83e891dbe6cf0c812e5969fc608d7023e1a3
+Author: Schnair, Jack Michael (817962067) <jmschnair@wpi.edu>
+Date:   Mon Jul 7 22:50:03 2025 +0000
+
+    Delete leagueStorage.json
+
+ data/leagueStorage.json | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit a6d2d9eb360afae8c3b9602b1fc8afb8802b4682
+Author: jackschnair <12jack812@gmail.com>
+Date:   Mon Jul 7 18:48:15 2025 -0400
+
+    Added all files in data directory to .gitignore
+
+ .gitignore | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit fb7bb5d06838c3c096785f2cfbfe7aeb09acfe2e
+Author: jackschnair <12jack812@gmail.com>
+Date:   Mon Jul 7 18:45:58 2025 -0400
+
+    Added basics for "createLeague" functionality
+
+ data/leagueStorage.json |  1 +
+ src/admin.ts            | 36 ++++++++++++++++++++++++++++++++++++
+ src/index.ts            |  3 +++
+ src/league.ts           | 22 +++++++++++++++++++---
+ 4 files changed, 59 insertions(+), 3 deletions(-)
+
+commit 2f891675d111c1471269b1b69521b4092fd14e77
+Merge: 27cd2a3 b5ad269
+Author: jackschnair <12jack812@gmail.com>
+Date:   Tue Jul 1 20:43:08 2025 -0400
+
+    Merge branch 'main' of https://gitlab03.wpi.edu/jmschnair/superior-scorekeeping
+    Initial Merge
+
+commit b5ad269d8892f0f01029d61a14a0244d3696711b
+Author: Schnair, Jack Michael (817962067) <jmschnair@wpi.edu>
+Date:   Wed Jul 2 00:41:50 2025 +0000
+
+    Replace README.md
+
+ README.md | 93 ++-------------------------------------------------------------
+ 1 file changed, 2 insertions(+), 91 deletions(-)
+
+commit 27cd2a3d3cf99995f4e079de40b434afbf7e86e5
+Author: jackschnair <12jack812@gmail.com>
+Date:   Tue Jul 1 20:35:15 2025 -0400
+
+    Initial commit
+
+ .gitignore         | 45 +++++++++++++++++++++++++++++++++++++++++++++
+ README.md          |  4 ++++
+ dist/README.txt    |  1 +
+ jest.config.js     | 13 +++++++++++++
+ package.json       | 14 ++++++++++++++
+ src/GameEvent.ts   | 28 ++++++++++++++++++++++++++++
+ src/game.ts        | 40 ++++++++++++++++++++++++++++++++++++++++
+ src/index.ts       |  7 +++++++
+ src/league.ts      | 24 ++++++++++++++++++++++++
+ src/scorekeeper.ts | 19 +++++++++++++++++++
+ tsconfig.json      | 15 +++++++++++++++
+ 11 files changed, 210 insertions(+)
+
+commit 73642f8e9189ee431267bc2c6de0a51363afa785
+Author: Schnair, Jack Michael (817962067) <jmschnair@wpi.edu>
+Date:   Tue Jul 1 01:28:28 2025 +0000
+
+    Initial commit
+
+ README.md | 93 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 93 insertions(+)

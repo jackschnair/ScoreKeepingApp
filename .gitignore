@@ -29,16 +29,8 @@ package-lock.json
 /data/*
 
 #node moduels of various subdirectories
-/src/createLeague/node_modules
-/src/createScorekeeper/node_modules
-/src/registerScorekeeper/node_modules
-/src/deleteLeague/node_modules
-/src/listGames/node_modules
-/src/listLeague/node_modules
-/src/listScorekeeper/node_modules
-/src/createGame/node_modules
-/src/deleteGame/node_modules
-
+/src/*/node_modules
+*.zip
 
 # misc
 .DS_Store

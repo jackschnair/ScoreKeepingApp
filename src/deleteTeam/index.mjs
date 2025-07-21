@@ -1,4 +1,3 @@
-
 import mysql from 'mysql';
 import { config } from './config.mjs';
 
@@ -15,24 +14,22 @@ function queryAsync(connection, sql, params) {
 }
 
 /**
- * AWS Lambda handler for creating a scorekeeper.
- * Expects event with: name, sport, credentials as top-level properties.
+ * AWS Lambda handler for deleting a team.
  */
 export async function handler(event) {
   let connection;
   try {
-    const { name, credentials } = event || {};
+    const { name } = event || {};
 
-    if (!name || !credentials) {
+    // Validate required field
+    if (!name) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ message: 'Missing required fields' }),
+        body: JSON.stringify({ message: 'Missing required field: name' }),
       };
     }
 
-    console.log("Connecting to host:", config.host);
-
-    // Connect to MySQL using config.mjs
+    // Connect to MySQL
     connection = mysql.createConnection({
       host: config.host,
       user: config.user,
@@ -40,36 +37,38 @@ export async function handler(event) {
       database: config.database,
     });
 
-    console.log("Connection created");
-
-    // Promisify connection.connect
     await new Promise((resolve, reject) => {
       connection.connect(err => (err ? reject(err) : resolve()));
     });
 
-    console.log("Connection established");
+    // Delete team
+    const deleteQuery = `
+      DELETE FROM teams WHERE name = ?
+    `;
 
-    // Insert into leagues table (credentials in plaintext)
-    await queryAsync(
-      connection,
-      'INSERT INTO scorekeepers (name, league, credentials, registration_status) VALUES (?, ?, ?, ?)',
-      [name, "", credentials, 0]
-    );
+    const params = [name];
+
+    const result = await queryAsync(connection, deleteQuery, params);
 
     connection.end();
 
+    if (result.affectedRows === 0) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: 'Team not found' }),
+      };
+    }
+
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: 'scorekeeper created successfully' }),
+      body: JSON.stringify({ message: 'Team deleted successfully' }),
     };
   } catch (error) {
     if (connection) connection.end();
     console.error('Error:', error);
     return {
       statusCode: 400,
-      body: JSON.stringify({ message: 'Error creating scorekeeper', error: error.message }),
+      body: JSON.stringify({ message: 'Error deleting team', error: error.message }),
     };
   }
 }
-    
-

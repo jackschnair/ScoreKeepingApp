@@ -14,44 +14,24 @@ function queryAsync(connection, sql, params) {
 }
 
 /**
- * AWS Lambda handler for creating a game.
+ * AWS Lambda handler for creating a team.
  */
 export async function handler(event) {
   let connection;
   try {
     const {
-      id,
-      date,
+      name,
       league,
-      home_team,
-      away_team,
-      location,
-      scorekeeper = null,
-      winner = null,
-      home_score = 0,
-      away_score = 0,
-      finalized = false
+      location
     } = event || {};
 
     // Validate required fields
-    if (!id || !date || !league || !home_team || !away_team || !location) {
+    if (!name || !league || !location) {
       return {
         statusCode: 400,
         body: JSON.stringify({ message: 'Missing required fields' }),
       };
     }
-
-    // Validate date format: YYYY-MM-DD HH:MM:SS
-    const dateTimeRegex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
-    if (!dateTimeRegex.test(date)) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ message: 'Date must be in YYYY-MM-DD HH:MM:SS format' }),
-      };
-    }
-
-    // Use the provided date string directly (or parse if needed)
-    const gameDate = date;
 
     // Connect to MySQL
     connection = mysql.createConnection({
@@ -65,27 +45,17 @@ export async function handler(event) {
       connection.connect(err => (err ? reject(err) : resolve()));
     });
 
-    // Insert new game
+    // Insert new team
     const insertQuery = `
-      INSERT INTO games (
-        id, date, league, home_team, away_team,
-        home_score, away_score, location, scorekeeper,
-        finalized, winner
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO teams (
+        name, league, location
+      ) VALUES (?, ?, ?)
     `;
 
     const params = [
-      id,
-      gameDate,
+      name,
       league,
-      home_team,
-      away_team,
-      home_score,
-      away_score,
-      location,
-      scorekeeper,
-      finalized,
-      winner
+      location
     ];
 
     await queryAsync(connection, insertQuery, params);
@@ -94,14 +64,14 @@ export async function handler(event) {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: 'Game created successfully' }),
+      body: JSON.stringify({ message: 'Team created successfully' }),
     };
   } catch (error) {
     if (connection) connection.end();
     console.error('Error:', error);
     return {
       statusCode: 400,
-      body: JSON.stringify({ message: 'Error creating game', error: error.message }),
+      body: JSON.stringify({ message: 'Error creating team', error: error.message }),
     };
   }
 }
