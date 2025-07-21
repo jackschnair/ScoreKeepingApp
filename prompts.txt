@@ -8,18 +8,23 @@ Creating "deleteLeague" lambda function prompts:
 1. I would like to make an aws lambda function for 'deleteLeague' that follows the template of the 'createLeague' directory, but will remove a league from the sql database based on league name passed to the function
 notes: wanted to overwrite my file instead of creating a new one. I guess that is a limitation.
 
-Creating "createScorekeeper" prompts: 
+Creating "createScorekeeper" prompts:
 1. instead of this file creating a league, I would like to create a scorekeeper. It will recieve a 'name', 'league', and 'credientials'. It will write these to the database as well as 'registration_status', which will be 0
-notes: I had to add the registration_status part myself. 
+notes: I had to add the registration_status part myself.
     I suppose I could have made it the defualt in the database instead.
     It also assumed the wrong inputs.
 
-Creating "registerScorekeeper" prompts: 
+Creating "registerScorekeeper" prompts:
 1. change this file so that instead of registering a scorekeeper, it just changes a scorekeeprs registration status from 0 to 1 using the scorekeeprs name as a parameter.
 
-Revising deleteLeauge based on iteration one notes prompt: 
+Revising deleteLeauge based on iteration one notes prompt:
 1. I would like to change this file so that credentials are a required field and in order for the DELETE SQL query to run, the credientials must match the league's credentials in the database
 note: This worked even better than I expected because it generated the proper status codes 403 and 404 for forbidden and not found. I didn't know there were specific sub error status codes and learned something new.
 
+Copying createGame to make createTeam prompt:
+1. Instead of creating a game, I would like to create a team with inputs name, league, and location. This will be written to the teams table in the database.
+note: This worked exactly as I had hoped.
 
-
+Making deleteTeam from createTeam prompt:
+1. Change this file so that instead of createing a team it deletes a team. It should take a name and delete the databased entry based on the name.
+note: went as expected.
