@@ -55,20 +55,39 @@ export async function handler(event) {
     if (result.affectedRows === 0) {
       return {
         statusCode: 404,
-        body: JSON.stringify({ message: 'Team not found' }),
+        body: JSON.stringify({ message: `Team '${name}' not found` }),
       };
     }
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: 'Team deleted successfully' }),
+      body: JSON.stringify({ message: `Team '${name}' deleted successfully` }),
     };
   } catch (error) {
     if (connection) connection.end();
     console.error('Error:', error);
+    if (error.code === 'ER_DUP_ENTRY') {
+      return {
+        statusCode: 409,
+        body: JSON.stringify({
+          message: `Duplicate entry: a team with the name '${name}' already exists.`,
+          error: error.sqlMessage,
+          code: error.code,
+          errno: error.errno,
+          sqlState: error.sqlState
+        }),
+      };
+    }
     return {
       statusCode: 400,
-      body: JSON.stringify({ message: 'Error deleting team', error: error.message }),
+      body: JSON.stringify({
+        message: `Error deleting team '${name}': ${error.message}`,
+        error: error.message,
+        sqlMessage: error.sqlMessage,
+        code: error.code,
+        errno: error.errno,
+        sqlState: error.sqlState
+      }),
     };
   }
 }
