@@ -130,9 +130,40 @@
     <div class="response" id="registerScorekeeperResponse"></div>
   </form>
 
+  <!-- FINALIZE LEAGUE -->
+  <form id="finalizeLeagueForm">
+    <h2>Finalize League</h2>
+    <label>League Name: <input name="league" required /></label>
+    <label>Credentials: <input name="credentials" required placeholder="password"/></label>
+    <button type="submit">Finalize League</button>
+    <div class="response" id="finalizeLeagueResponse"></div>
+  </form>
+
+  <!-- ASSIGN SCOREKEEPER -->
+  <form id="assignScorekeeperForm">
+    <h2>Assign Scorekeeper</h2>
+    <label>Scorekeeper Name: <input name="scorekeeper" required /></label>
+    <label>League: <input name="league" required /></label>
+    <label>Game ID: <input name="game_id" required /></label>
+    <label>Credentials: <input name="credentials" required placeholder="password"/></label>
+    <button type="submit">Assign Scorekeeper</button>
+    <div class="response" id="assignScorekeeperResponse"></div>
+  </form>
+
+  <!-- UNASSIGN SCOREKEEPER -->
+  <form id="unassignScorekeeperForm">
+    <h2>Unassign Scorekeeper</h2>
+    <label>Scorekeeper Name: <input name="scorekeeper" required /></label>
+    <label>League: <input name="league" required /></label>
+    <label>Game ID: <input name="game_id" required /></label>
+    <label>Credentials: <input name="credentials" required placeholder="password"/></label>
+    <button type="submit">Unassign Scorekeeper</button>
+    <div class="response" id="unassignScorekeeperResponse"></div>
+  </form>
+
   <!-- LIST GAMES -->
   <form id="listGamesForm">
-    <h2>List Games</h2>
+    <h2>List Games (just for testing)</h2>
     <button type="submit">List All Games</button>
     <div class="response" id="listGamesResponse"></div>
   </form>
@@ -172,6 +203,9 @@
     submitForm('createGameForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/createGame', 'createGameResponse');
     submitForm('deleteGameForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/deleteGame', 'deleteGameResponse');
     submitForm('registerScorekeeperForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/registerScorekeeper', 'registerScorekeeperResponse');
+    submitForm('finalizeLeagueForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/finalizeLeague', 'finalizeLeagueResponse');
+    submitForm('assignScorekeeperForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/assignScorekeeper', 'assignScorekeeperResponse');
+    submitForm('unassignScorekeeperForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/unassignScorekeeper', 'unassignScorekeeperResponse');
     submitForm('listGamesForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/listGames', 'listGamesResponse', 'GET');
   </script>
 </body>

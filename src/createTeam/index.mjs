@@ -64,14 +64,32 @@ export async function handler(event) {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: 'Team created successfully' }),
+      body: JSON.stringify({ message: `Team '${name}' created successfully` }),
     };
   } catch (error) {
     if (connection) connection.end();
-    console.error('Error:', error);
+    if (error.code === 'ER_DUP_ENTRY') {
+      return {
+        statusCode: 409,
+        body: JSON.stringify({
+          message: `Duplicate entry: a team with the name '${name}' already exists.`,
+          error: error.sqlMessage,
+          code: error.code,
+          errno: error.errno,
+          sqlState: error.sqlState
+        }),
+      };
+    }
     return {
       statusCode: 400,
-      body: JSON.stringify({ message: 'Error creating team', error: error.message }),
+      body: JSON.stringify({
+        message: `Error creating team '${name}': ${error.message}`,
+        error: error.message,
+        sqlMessage: error.sqlMessage,
+        code: error.code,
+        errno: error.errno,
+        sqlState: error.sqlState
+      }),
     };
   }
 }
