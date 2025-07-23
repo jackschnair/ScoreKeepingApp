@@ -71,7 +71,7 @@ export async function handler(event) {
     for (const league of leagues) {
       const scorekeepers = await queryAsync(
         connection,
-        'SELECT name FROM scorekeepers WHERE league = ?',
+        'SELECT name FROM scorekeepers WHERE league = ? AND registration_status = 1',
         [league.name]
       );
       league.scorekeepers = scorekeepers.map(sk => sk.name);

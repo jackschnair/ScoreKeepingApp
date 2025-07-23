@@ -50,7 +50,7 @@ export async function handler(event) {
     // Validate league_credentials against leagues table
     const leagueRows = await queryAsync(
       connection,
-      'SELECT credentials FROM leagues WHERE name = ?',
+      'SELECT credentials, finalized FROM leagues WHERE name = ?',
       [league]
     );
     if (!leagueRows || leagueRows.length === 0) {
@@ -65,6 +65,13 @@ export async function handler(event) {
       return {
         statusCode: 403,
         body: JSON.stringify({ message: 'Invalid credentials for this league' }),
+      };
+    }
+    if (leagueRows[0].finalized === 1 || leagueRows[0].finalized === true || leagueRows[0].finalized === '1') {
+      connection.end();
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: `Cannot delete a team: League '${league}' is finalized.` }),
       };
     }
 
