@@ -49,6 +49,21 @@ export async function handler(event) {
 
     console.log("Connection established");
 
+    // Check if credentials exist in admin table
+    // Admin table consists of one row with credentials
+    const adminResult = await queryAsync(
+      connection,
+      'SELECT * FROM admin WHERE credentials = ?',
+      [credentials]
+    );
+    if (!adminResult || adminResult.length === 0) {
+      connection.end();
+      return {
+        statusCode: 403,
+        body: JSON.stringify({ message: `Forbidden: Invalid admin credentials for league '${name}'` }),
+      };
+    }
+
     // Insert into leagues table (credentials in plaintext)
     await queryAsync(
       connection,
@@ -60,14 +75,14 @@ export async function handler(event) {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: 'League created successfully' }),
+      body: JSON.stringify({ message: `League '${name}' created successfully` }),
     };
   } catch (error) {
     if (connection) connection.end();
     console.error('Error:', error);
     return {
       statusCode: 400,
-      body: JSON.stringify({ message: 'Error creating league', error: error.message }),
+      body: JSON.stringify({ message: `Error creating league '${name}': ${error.message}` }),
     };
   }
 }

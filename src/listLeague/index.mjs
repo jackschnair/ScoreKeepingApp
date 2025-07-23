@@ -34,6 +34,32 @@ export async function handler(event) {
       connection.connect(err => (err ? reject(err) : resolve()));
     });
 
+    // Extract credentials from event
+    const { credentials } = event || {};
+    const missingFields = [];
+    if (!credentials) missingFields.push('credentials');
+    if (missingFields.length > 0) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: `Missing required field(s): ${missingFields.join(', ')}` }),
+      };
+    }
+
+    // Check if credentials exist in admin table
+    // works in short term with only one admin. That's the exent of the project anyways.
+    const adminResult = await queryAsync(
+      connection,
+      'SELECT * FROM admin WHERE credentials = ?',
+      [credentials]
+    );
+    if (!adminResult || adminResult.length === 0) {
+      connection.end();
+      return {
+        statusCode: 403,
+        body: JSON.stringify({ message: 'Forbidden: Invalid admin credentials' }),
+      };
+    }
+
     // Select all leagues from the database
     const leagues = await queryAsync(
       connection,
@@ -41,23 +67,50 @@ export async function handler(event) {
       []
     );
 
+    // For each league, get scorekeepers
+    for (const league of leagues) {
+      const scorekeepers = await queryAsync(
+        connection,
+        'SELECT name FROM scorekeepers WHERE league = ?',
+        [league.name]
+      );
+      league.scorekeepers = scorekeepers.map(sk => sk.name);
+    }
+
     connection.end();
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ 
+      body: JSON.stringify({
         count: leagues.length,
-        leagues: leagues 
+        leagues: leagues
       }),
     };
   } catch (error) {
     if (connection) connection.end();
     console.error('Error:', error);
+    if (error.code === 'ER_DUP_ENTRY') {
+      return {
+        statusCode: 409,
+        body: JSON.stringify({
+          message: 'Duplicate entry: a record with this value already exists.',
+          error: error.sqlMessage,
+          code: error.code,
+          errno: error.errno,
+          sqlState: error.sqlState
+        }),
+      };
+    }
     return {
       statusCode: 400,
-      body: JSON.stringify({ error: error.message }),
+      body: JSON.stringify({
+        message: 'Error with SQL operation',
+        error: error.message,
+        sqlMessage: error.sqlMessage,
+        code: error.code,
+        errno: error.errno,
+        sqlState: error.sqlState
+      }),
     };
   }
 }
-    
-

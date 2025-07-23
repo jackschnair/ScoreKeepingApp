@@ -43,6 +43,20 @@ export async function handler(event) {
       connection.connect(err => (err ? reject(err) : resolve()));
     });
 
+    // Check if credentials exist in admin table
+    const adminResult = await queryAsync(
+      connection,
+      'SELECT * FROM admin WHERE credentials = ?',
+      [credentials]
+    );
+    if (!adminResult || adminResult.length === 0) {
+      connection.end();
+      return {
+        statusCode: 403,
+        body: JSON.stringify({ message: `Forbidden: Invalid admin credentials for league '${name}'` }),
+      };
+    }
+
     // Check credentials before deleting
     const rows = await queryAsync(
       connection,
