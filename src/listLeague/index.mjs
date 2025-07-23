@@ -34,10 +34,10 @@ export async function handler(event) {
       connection.connect(err => (err ? reject(err) : resolve()));
     });
 
-    // Extract credentials from event
-    const { credentials } = event || {};
+    // Extract admin_credentials from event
+    const { admin_credentials } = event || {};
     const missingFields = [];
-    if (!credentials) missingFields.push('credentials');
+    if (!admin_credentials) missingFields.push('admin_credentials');
     if (missingFields.length > 0) {
       return {
         statusCode: 400,
@@ -45,18 +45,18 @@ export async function handler(event) {
       };
     }
 
-    // Check if credentials exist in admin table
+    // Check if admin_credentials exist in admin table
     // works in short term with only one admin. That's the exent of the project anyways.
     const adminResult = await queryAsync(
       connection,
       'SELECT * FROM admin WHERE credentials = ?',
-      [credentials]
+      [admin_credentials]
     );
     if (!adminResult || adminResult.length === 0) {
       connection.end();
       return {
         statusCode: 403,
-        body: JSON.stringify({ message: 'Forbidden: Invalid admin credentials' }),
+        body: JSON.stringify({ message: 'Forbidden: Invalid admin_credentials' }),
       };
     }
 

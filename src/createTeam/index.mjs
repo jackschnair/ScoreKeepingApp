@@ -15,21 +15,24 @@ function queryAsync(connection, sql, params) {
 
 /**
  * AWS Lambda handler for creating a team.
+ * Expects event with: name, league, location, and team_credentials as top-level properties.
  */
 export async function handler(event) {
   let connection;
+  let name, league, location, league_credentials;
   try {
-    const {
-      name,
-      league,
-      location
-    } = event || {};
+    ({ name, league, location, league_credentials } = event || {});
 
     // Validate required fields
-    if (!name || !league || !location) {
+    const missingFields = [];
+    if (!name) missingFields.push('name');
+    if (!league) missingFields.push('league');
+    if (!location) missingFields.push('location');
+    if (!league_credentials) missingFields.push('league_credentials');
+    if (missingFields.length > 0) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ message: 'Missing required fields' }),
+        body: JSON.stringify({ message: `Missing required fields: ${missingFields.join(', ')}` }),
       };
     }
 
@@ -45,7 +48,28 @@ export async function handler(event) {
       connection.connect(err => (err ? reject(err) : resolve()));
     });
 
-    // Insert new team
+    // Validate league_credentials against leagues table
+    const leagueRows = await queryAsync(
+      connection,
+      'SELECT credentials FROM leagues WHERE name = ?',
+      [league]
+    );
+    if (!leagueRows || leagueRows.length === 0) {
+      connection.end();
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: `League '${league}' not found` }),
+      };
+    }
+    if (leagueRows[0].credentials !== league_credentials) {
+      connection.end();
+      return {
+        statusCode: 403,
+        body: JSON.stringify({ message: 'Invalid credentials for this league' }),
+      };
+    }
+
+    // Insert new team (without credentials)
     const insertQuery = `
       INSERT INTO teams (
         name, league, location

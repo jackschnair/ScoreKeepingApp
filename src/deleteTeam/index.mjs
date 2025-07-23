@@ -15,17 +15,23 @@ function queryAsync(connection, sql, params) {
 
 /**
  * AWS Lambda handler for deleting a team.
+ * Expects event with: name (team name to delete) and league_credentials as top-level properties.
  */
 export async function handler(event) {
   let connection;
+  let name, league, league_credentials;
   try {
-    const { name } = event || {};
+    ({ name, league, league_credentials } = event || {});
 
-    // Validate required field
-    if (!name) {
+    // Validate required fields
+    const missingFields = [];
+    if (!name) missingFields.push('name');
+    if (!league) missingFields.push('league');
+    if (!league_credentials) missingFields.push('league_credentials');
+    if (missingFields.length > 0) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ message: 'Missing required field: name' }),
+        body: JSON.stringify({ message: `Missing required fields: ${missingFields.join(', ')}` }),
       };
     }
 
@@ -41,47 +47,53 @@ export async function handler(event) {
       connection.connect(err => (err ? reject(err) : resolve()));
     });
 
-    // Delete team
-    const deleteQuery = `
-      DELETE FROM teams WHERE name = ?
-    `;
+    // Validate league_credentials against leagues table
+    const leagueRows = await queryAsync(
+      connection,
+      'SELECT credentials FROM leagues WHERE name = ?',
+      [league]
+    );
+    if (!leagueRows || leagueRows.length === 0) {
+      connection.end();
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: `League '${league}' not found` }),
+      };
+    }
+    if (leagueRows[0].credentials !== league_credentials) {
+      connection.end();
+      return {
+        statusCode: 403,
+        body: JSON.stringify({ message: 'Invalid credentials for this league' }),
+      };
+    }
 
-    const params = [name];
-
-    const result = await queryAsync(connection, deleteQuery, params);
+    // Delete the team from teams table
+    const result = await queryAsync(
+      connection,
+      'DELETE FROM teams WHERE name = ? AND league = ?',
+      [name, league]
+    );
 
     connection.end();
 
-    if (result.affectedRows === 0) {
+    if (result.affectedRows && result.affectedRows > 0) {
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ message: `Team '${name}' in league '${league}' deleted successfully` }),
+      };
+    } else {
       return {
         statusCode: 404,
-        body: JSON.stringify({ message: `Team '${name}' not found` }),
+        body: JSON.stringify({ message: `Team '${name}' in league '${league}' not found` }),
       };
     }
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ message: `Team '${name}' deleted successfully` }),
-    };
   } catch (error) {
     if (connection) connection.end();
-    console.error('Error:', error);
-    if (error.code === 'ER_DUP_ENTRY') {
-      return {
-        statusCode: 409,
-        body: JSON.stringify({
-          message: `Duplicate entry: a team with the name '${name}' already exists.`,
-          error: error.sqlMessage,
-          code: error.code,
-          errno: error.errno,
-          sqlState: error.sqlState
-        }),
-      };
-    }
     return {
       statusCode: 400,
       body: JSON.stringify({
-        message: `Error deleting team '${name}': ${error.message}`,
+        message: `Error deleting team${name ? ` '${name}'` : ''}${league ? ` in league '${league}'` : ''}: ${error.message}`,
         error: error.message,
         sqlMessage: error.sqlMessage,
         code: error.code,

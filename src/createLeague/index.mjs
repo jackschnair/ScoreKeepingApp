@@ -21,12 +21,17 @@ function queryAsync(connection, sql, params) {
 export async function handler(event) {
   let connection;
   try {
-    const { name, sport, credentials } = event || {};
+    const { name, sport, league_credentials, admin_credentials } = event || {};
 
-    if (!name || !sport || !credentials) {
+    const missingFields = [];
+    if (!name) missingFields.push('name');
+    if (!sport) missingFields.push('sport');
+    if (!admin_credentials) missingFields.push('admin_credentials');
+    if (!league_credentials) missingFields.push('league_credentials');
+    if (missingFields.length > 0) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ message: 'Missing required fields' }),
+        body: JSON.stringify({ message: `Missing required fields: ${missingFields.join(', ')}` }),
       };
     }
 
@@ -49,12 +54,12 @@ export async function handler(event) {
 
     console.log("Connection established");
 
-    // Check if credentials exist in admin table
+    // Check if admin_credentials exist in admin table
     // Admin table consists of one row with credentials
     const adminResult = await queryAsync(
       connection,
       'SELECT * FROM admin WHERE credentials = ?',
-      [credentials]
+      [admin_credentials]
     );
     if (!adminResult || adminResult.length === 0) {
       connection.end();
@@ -64,11 +69,11 @@ export async function handler(event) {
       };
     }
 
-    // Insert into leagues table (credentials in plaintext)
+    // Insert into leagues table (store league_credentials in credentials column)
     await queryAsync(
       connection,
-      'INSERT INTO leagues (name, sport, credentials) VALUES (?, ?, ?)',
-      [name, sport, credentials]
+      'INSERT INTO leagues (name, sport, credentials, finalized) VALUES (?, ?, ?, ?)',
+      [name, sport, league_credentials, 0]
     );
 
     connection.end();

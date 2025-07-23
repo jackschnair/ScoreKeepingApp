@@ -103,7 +103,7 @@
     <label>Team Name: <input name="name" required /></label>
     <label>League: <input name="league" required /></label>
     <label>Location: <input name="location" required /></label>
-    <label>Credentials: <input name="credentials" required placeholder="password"/></label>
+    <label>League Credentials: <input name="league_credentials" required/></label>
     <button type="submit">Create Team</button>
     <div class="response" id="createTeamResponse"></div>
   </form>
@@ -112,7 +112,8 @@
   <form id="deleteTeamForm">
     <h2>Delete Team</h2>
     <label>Team Name: <input name="name" required /></label>
-    <label>Credentials: <input name="credentials" required placeholder="password"/></label>
+    <label>League: <input name="league" required /></label>
+    <label>League Credentials: <input name="league_credentials" required/></label>
     <button type="submit">Delete Team</button>
     <div class="response" id="deleteTeamResponse"></div>
   </form>
@@ -127,7 +128,7 @@
   <!-- LIST LEAGUES -->
   <form id="listLeaguesForm">
     <h2>List Leagues</h2>
-    <label>Credentials: <input name="credentials" required placeholder="password"/></label>
+    <label>Admin Credentials: <input name="admin_credentials" required placeholder="password"/></label>
     <button type="submit">List All Leagues</button>
     <div class="response" id="listLeaguesResponse"></div>
   </form>
@@ -135,7 +136,7 @@
   <!-- FINALIZE LEAGUE -->
   <form id="finalizeLeagueForm">
     <h2>Finalize League</h2>
-    <label>League Name: <input name="league" required /></label>
+    <label>League Name: <input name="name" required /></label>
     <label>Credentials: <input name="credentials" required placeholder="password"/></label>
     <button type="submit">Finalize League</button>
     <div class="response" id="finalizeLeagueResponse"></div>
