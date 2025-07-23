@@ -97,12 +97,13 @@
 
   <h1>Admin use cases</h1>
 
-  <!-- CREATE LEAGUE -->
-  <form id="createLeagueForm">
+   <!-- CREATE LEAGUE -->
+   <form id="createLeagueForm">
     <h2>Create League</h2>
     <label>League Name: <input name="name" required /></label>
     <label>Sport: <input name="sport" required /></label>
-    <label>Credentials: <input name="credentials" required placeholder="password"/></label>
+    <label>League credentials: <input name="league_credentials" required /></label>
+    <label>Admin credentials: <input name="admin_credentials" required placeholder="password"/></label>
     <button type="submit">Create League</button>
     <div class="response" id="createLeagueResponse"></div>
   </form>
@@ -111,7 +112,7 @@
   <form id="deleteLeagueForm">
     <h2>Delete League</h2>
     <label>League Name: <input name="name" required /></label>
-    <label>Credentials: <input name="credentials" required placeholder="password"/></label>
+    <label>Admin credentials: <input name="admin_credentials" required placeholder="password"/></label>
     <button type="submit">Delete League</button>
     <div class="response" id="deleteLeagueResponse"></div>
   </form>
@@ -119,7 +120,7 @@
   <!-- LIST LEAGUES -->
   <form id="listLeaguesForm">
     <h2>List Leagues</h2>
-    <label>Credentials: <input name="credentials" required placeholder="password"/></label>
+    <label>Credentials: <input name="admin_credentials" required placeholder="password"/></label>
     <button type="submit">List All Leagues</button>
     <div class="response" id="listLeaguesResponse"></div>
   </form>

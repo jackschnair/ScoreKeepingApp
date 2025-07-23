@@ -57,27 +57,6 @@ export async function handler(event) {
       };
     }
 
-    // Check credentials before deleting
-    const rows = await queryAsync(
-      connection,
-      'SELECT credentials FROM leagues WHERE name = ?',
-      [name]
-    );
-    if (!rows || rows.length === 0) {
-      connection.end();
-      return {
-        statusCode: 404,
-        body: JSON.stringify({ message: `League '${name}' not found` }),
-      };
-    }
-    if (rows[0].credentials !== credentials) {
-      connection.end();
-      return {
-        statusCode: 403,
-        body: JSON.stringify({ message: 'Invalid credentials for this league' }),
-      };
-    }
-
     // Delete from leagues table by name
     const result = await queryAsync(
       connection,
