@@ -1,4 +1,3 @@
-
 import mysql from 'mysql';
 import { config } from './config.mjs';
 
@@ -16,17 +15,17 @@ function queryAsync(connection, sql, params) {
 
 /**
  * AWS Lambda handler for unassigning a scorekeeper from a game.
- * Expects event with: gameId and scorekeeperName as top-level properties.
+ * Expects event with: gameId, scorekeeperName, and credentials.
  */
 export async function handler(event) {
   let connection;
   try {
-    const { gameId, scorekeeperName } = event || {};
+    const { gameId, scorekeeperName, credentials } = event || {};
 
-    if (!gameId || !scorekeeperName) {
+    if (!gameId || !scorekeeperName || !credentials) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ message: 'Missing required fields: gameId or scorekeeperName' }),
+        body: JSON.stringify({ message: 'Missing required fields: gameId, scorekeeperName, or credentials' }),
       };
     }
 
@@ -41,6 +40,21 @@ export async function handler(event) {
     await new Promise((resolve, reject) => {
       connection.connect(err => (err ? reject(err) : resolve()));
     });
+
+    // Validate scorekeeper credentials
+    const authCheck = await queryAsync(
+      connection,
+      'SELECT COUNT(*) AS count FROM scorekeepers WHERE name = ? AND credentials = ?',
+      [scorekeeperName, credentials]
+    );
+
+    if (authCheck[0].count === 0) {
+      connection.end();
+      return {
+        statusCode: 401,
+        body: JSON.stringify({ message: 'Invalid credentials for scorekeeper' }),
+      };
+    }
 
     // Confirm game exists
     const gameCheck = await queryAsync(
@@ -57,7 +71,7 @@ export async function handler(event) {
       };
     }
 
-    // Confirm scorekeeper exists by name
+    // Confirm scorekeeper exists
     const scorekeeperCheck = await queryAsync(
       connection,
       'SELECT COUNT(*) AS count FROM scorekeepers WHERE name = ?',
@@ -72,10 +86,10 @@ export async function handler(event) {
       };
     }
 
-    // Delete the assignment using name instead of ID
+    // Update the assignment
     const result = await queryAsync(
       connection,
-      'DELETE FROM game_scorekeepers WHERE game_id = ? AND scorekeeper_name = ?',
+      'UPDATE games SET scorekeeper = NULL WHERE id = ? AND scorekeeper = ?',
       [gameId, scorekeeperName]
     );
 
