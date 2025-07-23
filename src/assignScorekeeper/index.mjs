@@ -1,4 +1,3 @@
-
 import mysql from 'mysql';
 import { config } from './config.mjs';
 
@@ -16,17 +15,17 @@ function queryAsync(connection, sql, params) {
 
 /**
  * AWS Lambda handler for assigning a scorekeeper to a game.
- * Expects event with: gameId and scorekeeperName as top-level properties.
+ * Expects event with: gameId, scorekeeperName, and credentials as top-level properties.
  */
 export async function handler(event) {
   let connection;
   try {
-    const { gameId, scorekeeperName } = event || {};
+    const { gameId, scorekeeperName, credentials } = event || {};
 
-    if (!gameId || !scorekeeperName) {
+    if (!gameId || !scorekeeperName || !credentials) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ message: 'Missing required fields: gameId or scorekeeperName' }),
+        body: JSON.stringify({ message: 'Missing required fields: gameId, scorekeeperName, or credentials' }),
       };
     }
 
@@ -41,6 +40,21 @@ export async function handler(event) {
     await new Promise((resolve, reject) => {
       connection.connect(err => (err ? reject(err) : resolve()));
     });
+
+    // Validate credentials for the scorekeeper
+    const authCheck = await queryAsync(
+      connection,
+      'SELECT COUNT(*) AS count FROM scorekeepers WHERE name = ? AND credentials = ?',
+      [scorekeeperName, credentials]
+    );
+
+    if (authCheck[0].count === 0) {
+      connection.end();
+      return {
+        statusCode: 401,
+        body: JSON.stringify({ message: 'Invalid credentials for scorekeeper' }),
+      };
+    }
 
     // Check if the game exists
     const gameCheck = await queryAsync(
@@ -57,25 +71,10 @@ export async function handler(event) {
       };
     }
 
-    // Check if the scorekeeper exists
-    const scorekeeperCheck = await queryAsync(
-      connection,
-      'SELECT COUNT(*) AS count FROM scorekeepers WHERE name = ?',
-      [scorekeeperName]
-    );
-
-    if (scorekeeperCheck[0].count === 0) {
-      connection.end();
-      return {
-        statusCode: 404,
-        body: JSON.stringify({ message: `Scorekeeper with name '${scorekeeperName}' not found` }),
-      };
-    }
-
-    // Optional: prevent duplicate assignment
+    // Prevent duplicate assignment
     const duplicateCheck = await queryAsync(
       connection,
-      'SELECT COUNT(*) AS count FROM game_scorekeepers WHERE game_id = ? AND scorekeeper_name = ?',
+      'SELECT COUNT(*) AS count FROM games WHERE id = ? AND scorekeeper = ?',
       [gameId, scorekeeperName]
     );
 
@@ -90,8 +89,8 @@ export async function handler(event) {
     // Assign scorekeeper to game
     const result = await queryAsync(
       connection,
-      'INSERT INTO game_scorekeepers (game_id, scorekeeper_name) VALUES (?, ?)',
-      [gameId, scorekeeperName]
+      'UPDATE games SET scorekeeper = ? WHERE id = ?',
+      [scorekeeperName, gameId] 
     );
 
     connection.end();
