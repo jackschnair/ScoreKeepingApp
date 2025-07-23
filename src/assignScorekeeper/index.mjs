@@ -20,12 +20,12 @@ function queryAsync(connection, sql, params) {
 export async function handler(event) {
   let connection;
   try {
-    const { gameId, scorekeeperName, credentials } = event || {};
+    const { gameId, scorekeeperName, leagueName, credentials } = event || {};
 
-    if (!gameId || !scorekeeperName || !credentials) {
+    if (!gameId || !scorekeeperName || !leagueName || !credentials) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ message: 'Missing required fields: gameId, scorekeeperName, or credentials' }),
+        body: JSON.stringify({ message: 'Missing required fields: gameId, scorekeeperName, leagueName, or credentials' }),
       };
     }
 
@@ -41,18 +41,18 @@ export async function handler(event) {
       connection.connect(err => (err ? reject(err) : resolve()));
     });
 
-    // Validate credentials for the scorekeeper
+    // Validate credentials for the league
     const authCheck = await queryAsync(
       connection,
-      'SELECT COUNT(*) AS count FROM scorekeepers WHERE name = ? AND credentials = ?',
-      [scorekeeperName, credentials]
+      'SELECT COUNT(*) AS count FROM leagues WHERE name = ? AND credentials = ?',
+      [leagueName, credentials]
     );
 
     if (authCheck[0].count === 0) {
       connection.end();
       return {
         statusCode: 401,
-        body: JSON.stringify({ message: 'Invalid credentials for scorekeeper' }),
+        body: JSON.stringify({ message: 'Invalid credentials for league' }),
       };
     }
 
@@ -85,6 +85,20 @@ export async function handler(event) {
         body: JSON.stringify({ message: `Scorekeeper '${scorekeeperName}' is already assigned to game ${gameId}` }),
       };
     }
+
+      // Check if scorekeeper exists
+      const scorekeeperCheck = await queryAsync(
+        connection,
+        'SELECT COUNT(*) AS count FROM scorekeepers WHERE name = ?',
+        [scorekeeperName]
+      );
+      if (scorekeeperCheck[0].count === 0) {
+        connection.end();
+        return {
+          statusCode: 404,
+          body: JSON.stringify({ message: `Scorekeeper '${scorekeeperName}' not found` }),
+        };
+      }
 
     // Assign scorekeeper to game
     const result = await queryAsync(
