@@ -102,7 +102,8 @@
     <h2>Create League</h2>
     <label>League Name: <input name="name" required /></label>
     <label>Sport: <input name="sport" required /></label>
-    <label>Credentials: <input name="credentials" required /></label>
+    <label>League credentials: <input name="league_credentials" required /></label>
+    <label>Admin credentials: <input name="admin_credentials" required placeholder="password"/></label>
     <button type="submit">Create League</button>
     <div class="response" id="createLeagueResponse"></div>
   </form>
@@ -111,17 +112,18 @@
   <form id="deleteLeagueForm">
     <h2>Delete League</h2>
     <label>League Name: <input name="name" required /></label>
-    <label>Credentials: <input name="credentials" required /></label>
+    <label>Admin credentials: <input name="admin_credentials" required placeholder="password"/></label>
     <button type="submit">Delete League</button>
     <div class="response" id="deleteLeagueResponse"></div>
   </form>
 
-  <!-- LIST LEAGUES -->
-  <form id="listLeaguesForm">
-    <h2>List Leagues</h2>
-    <button type="submit">List All Leagues</button>
-    <div class="response" id="listLeaguesResponse"></div>
-  </form>
+ <!-- LIST LEAGUES -->
+ <form id="listLeaguesForm">
+  <h2>List Leagues</h2>
+  <label>Credentials: <input name="admin_credentials" required placeholder="password"/></label>
+  <button type="submit">List All Leagues</button>
+  <div class="response" id="listLeaguesResponse"></div>
+</form>
 
   <!-- CREATE GAME -->
   <form id="createGameForm">
@@ -160,8 +162,9 @@
   <form id="createScorekeeperForm">
     <h2>Create Scorekeeper</h2>
     <label>Scorekeeper Name: <input name="name" required /></label>
-    <!-- <label>League: <input name="league" required /></label> -->
-    <label>Credentials: <input name="credentials" required /></label>
+    <label>Scorekeeper Credentials: <input name="scorekeeper_credentials" required /></label>
+    <label>League: <input name="league" required /></label>
+    <label>Leauge Credentials: <input name="league_credentials" required /></label>
     <button type="submit">Create Scorekeeper</button>
     <div class="response" id="createScorekeeperResponse"></div>
   </form>
@@ -171,13 +174,14 @@
     <h2>Register Scorekeeper</h2>
     <label>Scorekeeper Name: <input name="name" required /></label>
     <label>League: <input name="league" required /></label>
+    <label>Leauge Credentials: <input name="league_credentials" required /></label>
     <button type="submit">Register Scorekeeper</button>
     <div class="response" id="registerScorekeeperResponse"></div>
   </form>
 
   <!-- LIST SCOREKEEPERS -->
   <form id="listScorekeepersForm">
-    <h2>List Scorekeepers</h2>
+    <h2>List Scorekeepers (just for testing)</h2>
     <button type="submit">List All Scorekeepers</button>
     <div class="response" id="listScorekeepersResponse"></div>
   </form>
@@ -221,7 +225,7 @@
     submitForm('deleteGameForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/deleteGame', 'deleteGameResponse');
     submitForm('createScorekeeperForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/createScorekeeper', 'createScorekeeperResponse');
     submitForm('registerScorekeeperForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/registerScorekeeper', 'registerScorekeeperResponse');
-    submitForm('listLeaguesForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/listLeagues', 'listLeaguesResponse', 'GET');
+    submitForm('listLeaguesForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/listLeagues', 'listLeaguesResponse');
     submitForm('listGamesForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/listGames', 'listGamesResponse', 'GET');
     submitForm('listScorekeepersForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/listScorekeepers', 'listScorekeepersResponse', 'GET');
   </script>

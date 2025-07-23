@@ -137,7 +137,7 @@
   <form id="finalizeLeagueForm">
     <h2>Finalize League</h2>
     <label>League Name: <input name="name" required /></label>
-    <label>Credentials: <input name="credentials" required placeholder="password"/></label>
+    <label>League Credentials: <input name="credentials" required/></label>
     <button type="submit">Finalize League</button>
     <div class="response" id="finalizeLeagueResponse"></div>
   </form>
@@ -146,9 +146,9 @@
   <form id="assignScorekeeperForm">
     <h2>Assign Scorekeeper</h2>
     <label>Scorekeeper Name: <input name="scorekeeperName" required /></label>
-    <label>League: <input name="league" required /></label>
+    <label>League: <input name="leagueName" required /></label>
     <label>Game ID: <input name="gameId" required /></label>
-    <label>Credentials: <input name="credentials" required placeholder="password"/></label>
+    <label>League Credentials: <input name="credentials" required/></label>
     <button type="submit">Assign Scorekeeper</button>
     <div class="response" id="assignScorekeeperResponse"></div>
   </form>
@@ -156,10 +156,10 @@
   <!-- UNASSIGN SCOREKEEPER -->
   <form id="unassignScorekeeperForm">
     <h2>Unassign Scorekeeper</h2>
-    <label>Scorekeeper Name: <input name="scorekeeper" required /></label>
-    <label>League: <input name="league" required /></label>
-    <label>Game ID: <input name="game_id" required /></label>
-    <label>Credentials: <input name="credentials" required placeholder="password"/></label>
+    <label>Scorekeeper Name: <input name="scorekeeperName" required /></label>
+    <label>League: <input name="leagueName" required /></label>
+    <label>Game ID: <input name="gameId" required /></label>
+    <label>League Credentials: <input name="credentials" required/></label>
     <button type="submit">Unassign Scorekeeper</button>
     <div class="response" id="unassignScorekeeperResponse"></div>
   </form>

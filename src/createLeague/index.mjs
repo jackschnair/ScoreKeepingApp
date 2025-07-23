@@ -65,7 +65,7 @@ export async function handler(event) {
       connection.end();
       return {
         statusCode: 403,
-        body: JSON.stringify({ message: `Forbidden: Invalid admin credentials for league '${name}'` }),
+        body: JSON.stringify({ message: `Forbidden: Invalid admin credentials` }),
       };
     }
 
