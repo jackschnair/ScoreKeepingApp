@@ -60,14 +60,14 @@ export async function handler(event) {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: `Scorekeeper '${name}' created successfully' }),
+      body: JSON.stringify({ message: `Scorekeeper '${name}' created successfully` }),
     };
   } catch (error) {
     if (connection) connection.end();
     console.error('Error:', error);
     return {
       statusCode: 400,
-      body: JSON.stringify({ message: 'Error creating scorekeeper '${name}' ', error: error.message }),
+      body: JSON.stringify({ message: `Error creating scorekeeper '${name}'`, error: error.message }),
     };
   }
 }
