@@ -166,8 +166,10 @@
 
 <!-- LIST GAMES -->
 <form id="listGamesForm">
-  <h2>List Games (just for testing)</h2>
-  <button type="submit">List All Games</button>
+  <h2>List Games</h2>
+  <label>League Name: <input name="league_name" required /></label>
+  <label>League Credentials: <input name="league_credentials" required /></label>
+  <button type="submit">List Games</button>
   <div class="response" id="listGamesResponse"></div>
 </form>
 
@@ -210,7 +212,7 @@
     submitForm('finalizeLeagueForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/finalizeLeague', 'finalizeLeagueResponse');
     submitForm('assignScorekeeperForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/assignScorekeeper', 'assignScorekeeperResponse');
     submitForm('unassignScorekeeperForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/unassignScorekeeper', 'unassignScorekeeperResponse');
-    submitForm('listGamesForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/listGames', 'listGamesResponse', 'GET');
+    submitForm('listGamesForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/listGames', 'listGamesResponse');
   </script>
 </body>
 </html>
