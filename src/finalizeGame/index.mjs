@@ -15,17 +15,18 @@ function queryAsync(connection, sql, params) {
 
 /**
  * AWS Lambda handler to finalize a game.
- * Expects event with: id (game ID), league (league name), credentials (admin)
+ * Expects event with: id (game ID), league (league name), scorekeeperName, credentials
  */
 export async function handler(event) {
   let connection;
   try {
-    const { id, league, credentials } = event || {};
+    const { id, league, scorekeeperName, credentials } = event || {};
 
     // Validate required fields
     const missingFields = [];
     if (!id) missingFields.push('id');
     if (!league) missingFields.push('league');
+    if (!scorekeeperName) missingFields.push('scorekeeperName');
     if (!credentials) missingFields.push('credentials');
 
     if (missingFields.length > 0) {
@@ -46,18 +47,21 @@ export async function handler(event) {
       connection.connect(err => (err ? reject(err) : resolve()));
     });
 
-    // Validate admin credentials
-    const adminResult = await queryAsync(
+    // Validate scorekeeper credentials (case-insensitive name match)
+    const scorekeeperResult = await queryAsync(
       connection,
-      'SELECT * FROM admin WHERE credentials = ?',
-      [credentials]
+      `
+      SELECT * FROM scorekeepers 
+      WHERE LOWER(name) = LOWER(?) AND credentials = ? AND league = ?
+      `,
+      [scorekeeperName, credentials, league]
     );
 
-    if (!adminResult || adminResult.length === 0) {
+    if (!scorekeeperResult || scorekeeperResult.length === 0) {
       connection.end();
       return {
         statusCode: 403,
-        body: JSON.stringify({ message: 'Forbidden: Invalid admin credentials' }),
+        body: JSON.stringify({ message: 'Forbidden: Invalid scorekeeper credentials for this league' }),
       };
     }
 
