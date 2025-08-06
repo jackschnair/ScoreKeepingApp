@@ -46,21 +46,31 @@ export async function handler(event) {
       };
     }
 
+    // Increment the views count for this game
+    await queryAsync(
+      connection,
+      'UPDATE games SET views = COALESCE(views, 0) + 1 WHERE id = ? AND league = ?',
+      [game_id, league_name]
+    );
+    
     // Select the specific game by ID and check it belongs to the specified league
     const games = await queryAsync(
       connection,
-      'SELECT id, date, league, location, home_team, away_team, home_score, away_score, finalized FROM games WHERE id = ? AND league = ?',
+      'SELECT id, date, league, location, home_team, away_team, home_score, away_score, finalized, views FROM games WHERE id = ? AND league = ?',
       [game_id, league_name]
     );
 
-    connection.end();
-
     if (!games || games.length === 0) {
+      connection.end();
       return {
         statusCode: 404,
         body: JSON.stringify({ message: 'Game not found in the specified league' }),
       };
     }
+
+    
+
+    connection.end();
 
     return {
       statusCode: 200,
