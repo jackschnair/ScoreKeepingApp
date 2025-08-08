@@ -4,6 +4,21 @@ Once you check out this repository, enter the command 'npm install' to properly 
 
 Admin password is "password".
 
+Our twelve use cases for Iteration 3:
+
+1. List Games
+2. Set Rules
+3. Get League Info
+4. Unregister Scorekeeper (League)
+5. Unregister Scorekeeper (Admin)
+6. Provide report of consumer accesses
+7. Unfinalize game
+8. Create game event
+9. Finalize game
+10. Retrieve information for Leauge
+11. Retrieve information for any Game in League
+12. Retrieve play-by-play information for game
+
 Our six use cases for Iteration 2:
 1. Create Team
 2. Delete Team
