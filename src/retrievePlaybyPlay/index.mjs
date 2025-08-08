@@ -1,4 +1,3 @@
-
 import mysql from 'mysql';
 import { config } from './config.mjs';
 
@@ -15,14 +14,12 @@ function queryAsync(connection, sql, params) {
 }
 
 /**
- * AWS Lambda handler for setting rules for a specific league.
- * Accepts league_name, league_credentials, and rules (JSON) in event.body.
- * Merges/replaces rules in the DB for the league.
+ * AWS Lambda handler for loading play-by-play events by league and game ID.
  */
 export async function handler(event) {
   let connection;
   try {
-    // Parse input from event.body
+    // Parse and normalize input
     let body;
     if (event.body) {
       if (typeof event.body === 'string') {
@@ -38,17 +35,18 @@ export async function handler(event) {
         body = event.body;
       }
     } else {
-      body = event; // fallback for direct Lambda test events
+      body = event;
     }
-    const { league_name, league_credentials, rules } = body || {};
-    if (!league_name || !league_credentials || !rules) {
+
+    const { league, game_id } = body || {};
+    if (!league || !game_id) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ message: 'Missing required fields: league_name, league_credentials, or rules' }),
+        body: JSON.stringify({ message: 'Missing required fields: league or game_id' }),
       };
     }
 
-    // Connect to MySQL using config.mjs
+    // Connect to MySQL
     connection = mysql.createConnection({
       host: config.host,
       user: config.user,
@@ -59,39 +57,76 @@ export async function handler(event) {
       connection.connect(err => (err ? reject(err) : resolve()));
     });
 
-    // Validate league credentials
+    // Confirm league exists
     const leagueRows = await queryAsync(
       connection,
-      'SELECT rules FROM leagues WHERE name = ? AND credentials = ?',
-      [league_name, league_credentials]
+      'SELECT name FROM leagues WHERE name = ?',
+      [league]
     );
     if (!leagueRows || leagueRows.length === 0) {
       connection.end();
       return {
-        statusCode: 403,
-        body: JSON.stringify({ message: 'Invalid league_name or league_credentials' }),
+        statusCode: 404,
+        body: JSON.stringify({ message: 'League not found' }),
       };
     }
 
-    // Update the rules column in the DB (overwrite existing rules)
-    await queryAsync(
+    // Confirm game belongs to league
+    const gameRows = await queryAsync(
       connection,
-      'UPDATE leagues SET rules = ? WHERE name = ? AND credentials = ?',
-      [JSON.stringify(rules), league_name, league_credentials]
+      'SELECT id FROM games WHERE id = ? AND league = ?',
+      [game_id, league]
+    );
+    if (!gameRows || gameRows.length === 0) {
+      connection.end();
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: 'Game not found in the specified league' }),
+      };
+    }
+
+    // Fetch play-by-play events ordered by event_id ascending
+    const events = await queryAsync(
+      connection,
+      'SELECT event_id, info, date, valid, type FROM gameEvents WHERE game_id = ? ORDER BY event_id ASC',
+      [game_id]
     );
 
     connection.end();
+
+    // Parse event info JSON for each event
+    const parsedEvents = events.map(e => {
+      let infoObj;
+      try {
+        infoObj = JSON.parse(e.info);
+      } catch {
+        infoObj = null; // fallback if JSON parse fails
+      }
+      return {
+        event_id: e.event_id,
+        date: e.date,
+        valid: e.valid,
+        type: e.type,
+        info: infoObj,
+      };
+    });
+
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: 'Rules updated successfully', rules: rules }),
+      body: JSON.stringify({
+        league,
+        game_id,
+        play_by_play: parsedEvents,
+      }),
     };
+
   } catch (error) {
     if (connection) connection.end();
     console.error('Error:', error);
     return {
-      statusCode: 400,
+      statusCode: 500,
       body: JSON.stringify({
-        message: 'Error with SQL operation',
+        message: 'Error loading play-by-play events',
         error: error.message,
         sqlMessage: error.sqlMessage,
         code: error.code,

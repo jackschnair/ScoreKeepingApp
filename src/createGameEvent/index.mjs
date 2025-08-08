@@ -1,4 +1,3 @@
-
 import mysql from 'mysql';
 import { config } from './config.mjs';
 
@@ -15,55 +14,76 @@ function queryAsync(connection, sql, params) {
 }
 
 /**
- * Helper to evaluate a condition against event data
+ * Access nested property using dot/bracket notation
  */
-function evaluateCondition(condition, eventData) {
-  const { field, operator, value } = condition;
-  const actualValue = eventData[field];
-  
-  if (actualValue === undefined) {
-    return false; // Field doesn't exist in event data
-  }
-  
-  switch (operator) {
-    case '==':
-      return actualValue == value;
-    case '!=':
-      return actualValue != value;
-    case '>':
-      return actualValue > value;
-    case '>=':
-      return actualValue >= value;
-    case '<':
-      return actualValue < value;
-    case '<=':
-      return actualValue <= value;
-    default:
-      return false; // Unknown operator
+function getValueByPath(obj, path) {
+  try {
+    return path
+      .replace(/\[(\w+)\]/g, '.$1') // convert [0] to .0
+      .split('.')
+      .reduce((acc, part) => acc && acc[part], obj);
+  } catch {
+    return undefined;
   }
 }
 
 /**
- * Helper to validate an event against its rule conditions
+ * Evaluate an individual rule condition (value or field comparison)
+ */
+function evaluateRuleCondition(condition, eventData) {
+  let left, right;
+
+  if (condition.type === 'valueComparison') {
+    left = getValueByPath(eventData, condition.field);
+    right = condition.value;
+  } else if (condition.type === 'fieldComparison') {
+    left = getValueByPath(eventData, condition.fieldA);
+    right = getValueByPath(eventData, condition.fieldB);
+  } else {
+    return { passed: false, reason: 'Unknown condition type' };
+  }
+
+  let passed;
+  switch (condition.operator) {
+    case '==': passed = left == right; break;
+    case '!=': passed = left != right; break;
+    case '>': passed = left > right; break;
+    case '>=': passed = left >= right; break;
+    case '<': passed = left < right; break;
+    case '<=': passed = left <= right; break;
+    default: return { passed: false, reason: `Unknown operator: ${condition.operator}` };
+  }
+
+  const reason = passed
+    ? 'Passed'
+    : `Failed: ${JSON.stringify(left)} ${condition.operator} ${JSON.stringify(right)}`;
+
+  return { passed, reason };
+}
+
+/**
+ * Evaluate all rule conditions for an event, and return detailed results
  */
 function validateEvent(eventType, rule, eventData) {
-  if (!rule || !rule.conditions) {
-    return false;
-  }
-  
-  // All conditions must be true for the event to be valid
-  return rule.conditions.every(condition => evaluateCondition(condition, eventData));
+  if (!rule || !rule.conditions) return [];
+
+  return rule.conditions.map(condition => {
+    const result = evaluateRuleCondition(condition, eventData);
+    return {
+      condition,
+      passed: result.passed,
+      reason: result.reason
+    };
+  });
 }
 
 /**
  * AWS Lambda handler for validating and creating game events.
- * Accepts game_id, event_type, and event data in event.body.
- * Validates the event against the league's rules using the event's own data.
  */
 export async function handler(event) {
   let connection;
   try {
-    // Robustly parse input from event.body
+    // Parse and normalize input
     let body;
     if (event.body) {
       if (typeof event.body === 'string') {
@@ -79,18 +99,19 @@ export async function handler(event) {
         body = event.body;
       }
     } else {
-      body = event; // fallback for direct Lambda test events
+      body = event;
     }
-    
-    const { game_id, game_event } = body || {};
-    if (!game_id || !game_event) {
+
+    const { game_id, game_event, scorekeeperName, credentials } = body || {};
+    if (!game_id || !game_event || !scorekeeperName || !credentials) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ message: 'Missing required fields: game_id or game_event' }),
+        body: JSON.stringify({
+          message: 'Missing required fields: game_id, game_event, scorekeeperName, or credentials'
+        }),
       };
     }
 
-    // Extract event_type from game_event
     const { event_type, ...eventData } = game_event;
     if (!event_type) {
       return {
@@ -99,7 +120,7 @@ export async function handler(event) {
       };
     }
 
-    // Connect to MySQL using config.mjs
+    // Connect to MySQL
     connection = mysql.createConnection({
       host: config.host,
       user: config.user,
@@ -110,13 +131,12 @@ export async function handler(event) {
       connection.connect(err => (err ? reject(err) : resolve()));
     });
 
-    // Get the game and its associated league
+    // Get league for the game
     const gameRows = await queryAsync(
       connection,
       'SELECT league FROM games WHERE id = ?',
       [game_id]
     );
-    
     if (!gameRows || gameRows.length === 0) {
       connection.end();
       return {
@@ -124,16 +144,35 @@ export async function handler(event) {
         body: JSON.stringify({ message: 'Game not found' }),
       };
     }
-    
+
     const leagueName = gameRows[0].league;
-    
-    // Get the league's rules
+
+    // Validate scorekeeper credentials (case-insensitive name match)
+    const scorekeeperResult = await queryAsync(
+      connection,
+      `
+      SELECT * FROM scorekeepers 
+      WHERE LOWER(name) = LOWER(?) AND credentials = ? AND league = ?
+      `,
+      [scorekeeperName, credentials, leagueName]
+    );
+
+    if (!scorekeeperResult || scorekeeperResult.length === 0) {
+      connection.end();
+      return {
+        statusCode: 403,
+        body: JSON.stringify({
+          message: 'Forbidden: Invalid scorekeeper credentials for this league'
+        }),
+      };
+    }
+
+    // Get league rules
     const leagueRows = await queryAsync(
       connection,
       'SELECT rules FROM leagues WHERE name = ?',
       [leagueName]
     );
-    
     if (!leagueRows || leagueRows.length === 0) {
       connection.end();
       return {
@@ -141,78 +180,76 @@ export async function handler(event) {
         body: JSON.stringify({ message: 'League not found' }),
       };
     }
-    
-    // Parse the rules
+
     let rules = {};
-    if (leagueRows[0].rules) {
-      try {
-        rules = JSON.parse(leagueRows[0].rules);
-      } catch (e) {
-        connection.end();
-        return {
-          statusCode: 500,
-          body: JSON.stringify({ message: 'Error parsing league rules' }),
-        };
-      }
+    try {
+      rules = leagueRows[0].rules ? JSON.parse(leagueRows[0].rules) : {};
+    } catch (e) {
+      connection.end();
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ message: 'Error parsing league rules' }),
+      };
     }
-    
-    // Check if the event type has a rule defined
+
     const eventRule = rules[event_type];
     if (!eventRule) {
       connection.end();
       return {
         statusCode: 400,
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           message: `No rule defined for event type: ${event_type}`,
           available_rules: Object.keys(rules)
         }),
       };
     }
-    
-    // Validate the event against the rule using the event's own data
-    const isValid = validateEvent(event_type, eventRule, eventData);
-    
-    // Get the highest event_id and increment by 1
+
+    // Validate event
+    const validationResults = validateEvent(event_type, eventRule, eventData);
+    const isValid = validationResults.every(result => result.passed);
+
+    // Get next event_id
     const maxEventIdResult = await queryAsync(
       connection,
       'SELECT COALESCE(MAX(event_id), 0) as max_id FROM gameEvents'
     );
     const newEventId = maxEventIdResult[0].max_id + 1;
-    
-    // Insert the game event into the database
+
+    // Insert event into DB
     await queryAsync(
       connection,
       'INSERT INTO gameEvents (event_id, info, game_id, date, valid, type) VALUES (?, ?, ?, NOW(), ?, ?)',
       [newEventId, JSON.stringify(game_event), game_id, isValid, event_type]
     );
-    
+
     connection.end();
-    
+
     if (isValid) {
       return {
         statusCode: 200,
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           message: 'Event is valid and has been created',
           event_id: newEventId,
-          event_type: event_type,
-          game_id: game_id,
+          event_type,
+          game_id,
           league: leagueName
         }),
       };
     } else {
       return {
         statusCode: 400,
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           message: 'Event is not valid according to league rules but has been recorded',
           event_id: newEventId,
-          event_type: event_type,
-          game_id: game_id,
+          event_type,
+          game_id,
           league: leagueName,
-          rule_conditions: eventRule.conditions,
+          validation_results: validationResults,
           event_data: eventData
         }),
       };
     }
+
   } catch (error) {
     if (connection) connection.end();
     console.error('Error:', error);
@@ -229,5 +266,3 @@ export async function handler(event) {
     };
   }
 }
-    
-
