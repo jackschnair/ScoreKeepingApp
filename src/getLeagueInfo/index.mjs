@@ -91,6 +91,13 @@ export async function handler(event) {
       [league_name]
     );
 
+    // Get games for the specific league that have happened or will happen today (no future dates)
+    const games = await queryAsync(
+      connection,
+      'SELECT id, date, location, home_team, away_team, home_score, away_score, finalized FROM games WHERE league = ? AND DATE(date) <= CURDATE() ORDER BY date DESC',
+      [league_name]
+    );
+
     connection.end();
 
     return {
@@ -98,9 +105,9 @@ export async function handler(event) {
       body: JSON.stringify({
         league: {
           name: league.name,
-          sport: league.sport,
           teams: teams.map(team => team.name),
-          scorekeepers: scorekeepers.map(sk => sk.name)
+          registered_scorekeepers: scorekeepers.map(sk => sk.name),
+          games: games
         }
       }),
     };
