@@ -1,7 +1,7 @@
 {
     "scorekeeperName": "Tommy Scores",
     "credentials": "scores",
-    "game_id": "003",
+    "game_id": "002",
     "game_event": {
       "event_type": "goal_kick",
       "involvedPlayers": [
