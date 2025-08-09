@@ -1,0 +1,12 @@
+[
+    {
+        "Game ID":"001", 
+        "League":"MLB",
+        "League Credentials":"league_password"
+    },
+    {
+        "Game ID":"001", 
+        "League":"EPL",
+        "League Credentials":"footy"
+    }
+]

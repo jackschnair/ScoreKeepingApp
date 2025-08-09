@@ -11,3 +11,8 @@ league.registerScorekeeper(scorekeeper)
 unregisterScorekeeper(scorekeeper)
 
 console.log("\nDone")
+
+
+
+
+{"Team1":""}

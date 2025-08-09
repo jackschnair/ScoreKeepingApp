@@ -1,0 +1,10 @@
+[
+    {
+        "League Name": "MLB", 
+        "Admin Credentials": "password"
+    },
+    {
+        "League Name": "EPL", 
+        "Admin Credentials": "password"
+    }
+]

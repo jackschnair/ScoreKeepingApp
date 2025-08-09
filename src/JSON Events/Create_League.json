@@ -1,0 +1,14 @@
+[ 
+    {
+        "name": "EPL",
+        "sport": "Soccer",
+        "league_credentials": "footy",
+        "admin_credentials": "password"
+    },
+    {
+        "name": "MLB",
+        "sport": "Baseball",
+        "league_credentials": "league_password",
+        "admin_credentials": "password"
+    }
+]

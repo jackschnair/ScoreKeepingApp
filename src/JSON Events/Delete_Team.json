@@ -1,0 +1,12 @@
+[
+    {
+        "Team Name": "New York Yankees", 
+        "League":"MLB", 
+        "League Credentials":"league_password"
+    },
+    {
+        "Team Name": "Arsenal", 
+        "League":"EPL", 
+        "League Credentials":"footy"
+    }
+]
