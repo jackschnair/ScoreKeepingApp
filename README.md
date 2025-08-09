@@ -8,7 +8,7 @@ Admin password is "password".
 
 JSON events can be found in /src/JSON Events in the repository. 
 
-Note that when pasting JSON into our "setRules" or "createGameEvent" use cases on the webpage you should only include the JSON that follows "rules" for "setRules" and "game_event" for "createGameEvent"
+Note that when pasting JSON into our "setRules" or "createGameEvent" use cases on the webpage, you should only include the JSON that follows "rules" for setRules and "game_event" for createGameEvent
 
 setRules example:
 {
@@ -31,7 +31,7 @@ createGameEvent example:
 
 }
 
-Just include the {...} part in the json input textbox.
+Just include the {...} part in the JSON input textbox.
 
 Our twelve use cases for Iteration 3:
 
