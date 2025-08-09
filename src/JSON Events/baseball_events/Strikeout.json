@@ -10,12 +10,12 @@
         {
           "name": "Bruno Fernandes",
           "team": "Red Sox",
-          "position": "Pitcher"
+          "position": "pitcher"
         },
         {
           "name": "Reece James",
           "team": "Yankees",
-          "position": "Batter"
+          "position": "batter"
         }
       ],
       "inning": 5,
