@@ -34,11 +34,11 @@ export async function handler(event) {
       connection.connect(err => (err ? reject(err) : resolve()));
     });
 
-    // Extract league_name and admin_credentials from event
-    const { league_name, admin_credentials } = event || {};
+    // Extract league_name and league_credentials from event
+    const { league_name, league_credentials } = event || {};
     const missingFields = [];
     if (!league_name) missingFields.push('league_name');
-    if (!admin_credentials) missingFields.push('admin_credentials');
+    if (!league_credentials) missingFields.push('league_credentials');
     if (missingFields.length > 0) {
       return {
         statusCode: 400,
@@ -46,18 +46,17 @@ export async function handler(event) {
       };
     }
 
-    // Check if admin_credentials exist in admin table
-    // works in short term with only one admin. That's the extent of the project anyways.
-    const adminResult = await queryAsync(
+    // Check if league_credentials match the league
+    const leagueCheckResult = await queryAsync(
       connection,
-      'SELECT * FROM admin WHERE credentials = ?',
-      [admin_credentials]
+      'SELECT * FROM leagues WHERE name = ? AND credentials = ?',
+      [league_name, league_credentials]
     );
-    if (!adminResult || adminResult.length === 0) {
+    if (!leagueCheckResult || leagueCheckResult.length === 0) {
       connection.end();
       return {
         statusCode: 403,
-        body: JSON.stringify({ message: 'Forbidden: Invalid admin_credentials' }),
+        body: JSON.stringify({ message: 'Forbidden: Invalid league_credentials or league not found' }),
       };
     }
 
