@@ -74,6 +74,77 @@
     input, select { width: 300px; padding: 5px; }
     button { margin-top: 15px; padding: 10px 20px; }
     .response { margin-top: 10px; font-weight: bold; color: #444; }
+    
+    /* Enhanced Form Styles for JSON Input */
+    .rules-section {
+      margin-top: 40px;
+      padding: 25px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #f9f9f9;
+      max-width: 600px;
+    }
+
+    .rules-section h2 {
+      margin-bottom: 20px;
+      color: #2c3e50;
+      font-weight: bold;
+      font-size: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #34495e;
+    }
+
+    .form-group input[type="text"],
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+      font-family: inherit;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input[type="text"]:focus,
+    .form-group textarea:focus {
+      border-color: #3498db;
+      outline: none;
+      background: #fff;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 150px;
+      font-family: monospace;
+    }
+
+    /* Submit Button */
+    .submit-btn {
+      background: #3498db;
+      color: white;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 5px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 10px;
+      display: inline-block;
+    }
+
+    .submit-btn:hover {
+      background: #2980b9;
+    }
   </style>
 </head>
 <body>
@@ -185,6 +256,40 @@
     <div class="response" id="listGamesResponse"></div>
   </form>
 
+  <!-- SET RULES -->
+  <section class="rules-section">
+    <h2>Set League Rules</h2>
+
+    <form id="setRulesForm">
+      <div class="form-group">
+        <label for="league_name">League Name</label>
+        <input type="text" id="league_name" name="league_name" placeholder="Enter league name" required />
+      </div>
+
+      <div class="form-group">
+        <label for="league_credentials">League Credentials</label>
+        <input type="text" id="league_credentials" name="league_credentials" placeholder="Enter league credentials" required />
+      </div>
+
+      <div class="form-group">
+        <label for="rules">Rules JSON</label>
+        <textarea id="rules" name="rules" placeholder="Paste rules JSON content here..." required></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">Set Rules</button>
+      <div class="response" id="setRulesResponse"></div>
+    </form>
+  </section>
+
+  <!-- GET LEAGUE INFO -->
+  <form id="getLeagueInfoForm">
+    <h2>Get League Info</h2>
+    <label>League Name: <input name="league_name" required /></label>
+    <label>League Credentials: <input name="league_credentials" required /></label>
+    <button type="submit">Get League Info</button>
+    <div class="response" id="getLeagueInfoResponse"></div>
+  </form>
+
   <script>
     async function submitForm(formId, apiUrl, responseId, method = 'POST') {
       const form = document.getElementById(formId);
@@ -224,6 +329,8 @@
     submitForm('assignScorekeeperForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/assignScorekeeper', 'assignScorekeeperResponse');
     submitForm('unassignScorekeeperForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/unassignScorekeeper', 'unassignScorekeeperResponse');
     submitForm('listGamesForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/listGames', 'listGamesResponse');
+    submitForm('setRulesForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/setRules', 'setRulesResponse');
+    submitForm('getLeagueInfoForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/getLeagueInfo', 'getLeagueInfoResponse');
   </script>
 </body>
 </html> 

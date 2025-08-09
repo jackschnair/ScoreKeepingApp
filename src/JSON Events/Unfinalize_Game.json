@@ -1,14 +1,12 @@
 [
     {
         "id": "22",
-        "scorekeeperName": "Jimmy Counts",
-        "credentials": "counts",
+        "admin_credentials": "password",
         "league": "MLB"
       },
       {
         "id": "001",
-        "scorekeeperName": "Tommy Scores",
-        "credentials": "scores",
+        "admin_credentials": "password",
         "league": "EPL"
       }
 ]

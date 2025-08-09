@@ -15,6 +15,24 @@ function queryAsync(connection, sql, params) {
 }
 
 /**
+ * Helper to remove newlines from rules object recursively
+ */
+function removeNewlinesFromRules(obj) {
+  if (typeof obj === 'string') {
+    return obj.replace(/\\n/g, '').replace(/\n/g, '');
+  } else if (Array.isArray(obj)) {
+    return obj.map(item => removeNewlinesFromRules(item));
+  } else if (obj !== null && typeof obj === 'object') {
+    const cleaned = {};
+    for (const [key, value] of Object.entries(obj)) {
+      cleaned[key] = removeNewlinesFromRules(value);
+    }
+    return cleaned;
+  }
+  return obj;
+}
+
+/**
  * AWS Lambda handler for setting rules for a specific league.
  * Accepts league_name, league_credentials, and rules (JSON) in event.body.
  * Merges/replaces rules in the DB for the league.
@@ -48,6 +66,17 @@ export async function handler(event) {
       };
     }
 
+    // Parse rules if it's a string, otherwise use as-is
+    let parsedRules;
+    try {
+      parsedRules = typeof rules === 'string' ? JSON.parse(rules) : rules;
+    } catch (e) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: 'Invalid JSON in rules field' }),
+      };
+    }
+
     // Connect to MySQL using config.mjs
     connection = mysql.createConnection({
       host: config.host,
@@ -73,17 +102,20 @@ export async function handler(event) {
       };
     }
 
+    // Clean rules by removing newlines before storing
+    const cleanedRules = removeNewlinesFromRules(parsedRules);
+    
     // Update the rules column in the DB (overwrite existing rules)
     await queryAsync(
       connection,
       'UPDATE leagues SET rules = ? WHERE name = ? AND credentials = ?',
-      [JSON.stringify(rules), league_name, league_credentials]
+      [JSON.stringify(cleanedRules), league_name, league_credentials]
     );
 
     connection.end();
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: 'Rules updated successfully', rules: rules }),
+      body: JSON.stringify({ message: 'Rules updated successfully', rules: cleanedRules }),
     };
   } catch (error) {
     if (connection) connection.end();

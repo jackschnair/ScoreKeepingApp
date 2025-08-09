@@ -85,6 +85,13 @@ export async function handler(event) {
       };
     }
 
+    // Increment the views count for this game
+    await queryAsync(
+      connection,
+      'UPDATE games SET views = COALESCE(views, 0) + 1 WHERE id = ? AND league = ?',
+      [game_id, league]
+    );
+
     // Fetch play-by-play events ordered by event_id ascending
     const events = await queryAsync(
       connection,

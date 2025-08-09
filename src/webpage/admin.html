@@ -126,6 +126,33 @@
     <div class="response" id="listLeaguesResponse"></div>
   </form>
 
+  <!-- UNREGISTER SCOREKEEPER (ADMIN) -->
+  <form id="unregisterScorekeeperAdminForm">
+    <h2>Unregister Scorekeeper (Admin)</h2>
+    <label>Scorekeeper Name: <input name="scorekeeperName" required /></label>
+    <label>Admin Credentials: <input name="credentials" required placeholder="password" /></label>
+    <button type="submit">Unregister Scorekeeper</button>
+    <div class="response" id="unregisterScorekeeperAdminResponse"></div>
+  </form>
+
+  <!-- CONSUMER ACCESS REPORT -->
+  <form id="consumerAccessReportForm">
+    <h2>Consumer Access Report</h2>
+    <label>Admin Credentials: <input name="admin_credentials" required placeholder="password" /></label>
+    <button type="submit">Generate Access Report</button>
+    <div class="response" id="consumerAccessReportResponse"></div>
+  </form>
+
+  <!-- UNFINALIZE GAME -->
+  <form id="unfinalizeGameForm">
+    <h2>Unfinalize Game</h2>
+    <label>Game ID: <input name="id" required /></label>
+    <label>Admin Credentials: <input name="admin_credentials" required placeholder="password" /></label>
+    <label>League Name: <input name="league" required /></label>
+    <button type="submit">Unfinalize Game</button>
+    <div class="response" id="unfinalizeGameResponse"></div>
+  </form>
+
   <script>
     async function submitForm(formId, apiUrl, responseId, method = 'POST') {
       const form = document.getElementById(formId);
@@ -161,6 +188,9 @@
     submitForm('createLeagueForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/createLeague', 'createLeagueResponse');
     submitForm('deleteLeagueForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/deleteLeague', 'deleteLeagueResponse');
     submitForm('listLeaguesForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/listLeagues', 'listLeaguesResponse');
+    submitForm('unregisterScorekeeperAdminForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/unregisterScorekeeper', 'unregisterScorekeeperAdminResponse');
+    submitForm('consumerAccessReportForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/accessReport', 'consumerAccessReportResponse');
+    submitForm('unfinalizeGameForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/unfinalizeGame', 'unfinalizeGameResponse');
   </script>
 </body>
 </html>

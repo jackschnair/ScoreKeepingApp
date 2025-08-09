@@ -155,7 +155,9 @@
   <!-- LIST GAMES -->
   <form id="listGamesForm">
     <h2>List Games</h2>
-    <button type="submit">List All Games</button>
+    <label>League Name: <input name="league_name" required /></label>
+    <label>League Credentials: <input name="league_credentials" required /></label>
+    <button type="submit">List Games</button>
     <div class="response" id="listGamesResponse"></div>
   </form>
 
@@ -227,7 +229,7 @@
     submitForm('createScorekeeperForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/createScorekeeper', 'createScorekeeperResponse');
     submitForm('registerScorekeeperForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/registerScorekeeper', 'registerScorekeeperResponse');
     submitForm('listLeaguesForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/listLeagues', 'listLeaguesResponse');
-    submitForm('listGamesForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/listGames', 'listGamesResponse', 'GET');
+    submitForm('listGamesForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/listGames', 'listGamesResponse');
     submitForm('listScorekeepersForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/listScorekeepers', 'listScorekeepersResponse', 'GET');
   </script>
 </body>
