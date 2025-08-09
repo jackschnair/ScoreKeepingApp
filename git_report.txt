@@ -1,3 +1,332 @@
+commit 985f33f49acdd23e56a5a128bf1201fb713506fe
+Merge: ff9ac2e c3cab32
+Author: Graham, James  (901031018) <jgraham@wpi.edu>
+Date:   Sat Aug 9 02:55:13 2025 +0000
+
+    Merge branch 'webpage' into 'main'
+    
+    Updated website and made some final changes to a few use cases
+    
+    See merge request jmschnair/superior-scorekeeping!22
+
+commit c3cab3239db5ca41876572efd6a28ea6c66f15a2
+Author: jackschnair <12jack812@gmail.com>
+Date:   Fri Aug 8 22:53:20 2025 -0400
+
+    Updated website and made some final changes to a few use cases
+
+ src/JSON Events/Set_Rules.json               | 207 ++++++++++++++++++++++++++-
+ src/JSON Events/Unfinalize_Game.json         |   6 +-
+ src/createGameEvent/index.mjs                | 124 ++++++++--------
+ src/retrievePlaybyPlay/index.mjs             |   7 +
+ src/setRules/index.mjs                       |  36 ++++-
+ src/unfinalizeGame/index.mjs                 |  22 ++-
+ src/unregisterScorekeeper/index.mjs          |   8 +-
+ src/unregisterScorekeeperLeague/config.mjs   |   6 +
+ src/unregisterScorekeeperLeague/index.mjs    |  87 +++++++++++
+ src/unregisterScorekeeperLeague/package.json |  10 ++
+ src/webpage/admin.html                       |  30 ++++
+ src/webpage/consumer.html                    |  69 ++++++++-
+ src/webpage/iteration_one.html               |   6 +-
+ src/webpage/iteration_three.html             |  33 +++--
+ src/webpage/league.html                      | 107 ++++++++++++++
+ src/webpage/scorekeeper.html                 | 161 +++++++++++++++++++--
+ 16 files changed, 809 insertions(+), 110 deletions(-)
+
+commit ff9ac2e40e0d43a7c65d37465a05d17ad5b8bc05
+Merge: a5e7a5a 4166c0b
+Author: Graham, James  (901031018) <jgraham@wpi.edu>
+Date:   Sat Aug 9 00:36:37 2025 +0000
+
+    Merge branch 'webpage' into 'main'
+    
+    updated webpage
+    
+    See merge request jmschnair/superior-scorekeeping!21
+
+commit 4166c0b99278016039a3c4d219c74c3b3619affd
+Author: jackschnair <12jack812@gmail.com>
+Date:   Fri Aug 8 20:32:23 2025 -0400
+
+    updated webpage
+
+ src/getLeagueInfo/index.mjs      |  19 +-
+ src/webpage/admin.html           |   1 +
+ src/webpage/consumer.html        |   1 +
+ src/webpage/interface.html       |   1 +
+ src/webpage/iteration_one.html   |   1 +
+ src/webpage/iteration_three.html | 386 +++++++++++++++++++++++++++++++++++++++
+ src/webpage/iteration_two.html   |   1 +
+ src/webpage/league.html          |   1 +
+ src/webpage/scorekeeper.html     |   1 +
+ 9 files changed, 402 insertions(+), 10 deletions(-)
+
+commit a5e7a5af15061933121950417dd0d00410b88040
+Merge: 9d1b41b 7f17881
+Author: Schnair, Jack Michael (817962067) <jmschnair@wpi.edu>
+Date:   Sat Aug 9 00:31:41 2025 +0000
+
+    Merge branch 'iteration3_functions_v3' into 'main'
+    
+    Created JSON files and retrieveLeagueInfo
+    
+    See merge request jmschnair/superior-scorekeeping!19
+
+commit 7f178814c89f747715a0d508fd1c5cdc8a75bd29
+Author: James Graham <jgraham@wpi.com>
+Date:   Fri Aug 8 20:28:03 2025 -0400
+
+    Created JSON files and retrieveLeagueInfo
+
+ src/JSON Events/Access_Report.json          |   3 +
+ src/JSON Events/Assign_Scorekeeper.json     |  14 ++
+ src/JSON Events/Create_Game.json            |  20 ++
+ src/JSON Events/Create_League.json          |  14 ++
+ src/JSON Events/Create_Scorekeeper.json     |  13 +
+ src/JSON Events/Create_Team.json            |  26 ++
+ src/JSON Events/Delete_Game.json            |  12 +
+ src/JSON Events/Delete_League.json          |  10 +
+ src/JSON Events/Delete_Team.json            |  12 +
+ src/JSON Events/Finalize_Game.json          |  14 ++
+ src/JSON Events/Finalize_League.json        |  10 +
+ src/JSON Events/Get_League_Info.json        |  10 +
+ src/JSON Events/List_Games.json             |  10 +
+ src/JSON Events/List_Leagues.json           |   3 +
+ src/JSON Events/List_Scorekeepers.json      |   0
+ src/JSON Events/Register_Scorekeeper.json   |  12 +
+ src/JSON Events/Retrieve_Game.json          |  10 +
+ src/JSON Events/Retrieve_League_Info.json   |   8 +
+ src/JSON Events/Retrieve_Plays.json         |  10 +
+ src/JSON Events/Set_Rules.json              | 365 ++++++++++++++++++++++++++++
+ src/JSON Events/Unassign_Scorekeeper.json   |  14 ++
+ src/JSON Events/Unfinalize_Game.json        |  14 ++
+ src/JSON Events/Unregister_Scorekeeper.json |  10 +
+ src/index.ts                                |   5 +
+ src/retrieveLeagueInfo/config.mjs           |   6 +
+ src/retrieveLeagueInfo/index.mjs            | 138 +++++++++++
+ src/retrieveLeagueInfo/package.json         |  10 +
+ 27 files changed, 773 insertions(+)
+
+commit 9d1b41baf18a8ff5c42f3d0ce94a19653fd189fb
+Author: jackschnair <12jack812@gmail.com>
+Date:   Fri Aug 8 18:31:46 2025 -0400
+
+    Added iteration 3 list of use cases
+
+ README.md | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+commit 2552513d2f8ba41412871fcdc70b5a59286de105
+Merge: ad7a19b 070d15e
+Author: Graham, James  (901031018) <jgraham@wpi.edu>
+Date:   Fri Aug 8 17:06:48 2025 +0000
+
+    Merge branch 'iter3_events' into 'main'
+    
+    Added played games in league to league info (including today's games)
+    
+    See merge request jmschnair/superior-scorekeeping!18
+
+commit 070d15e645d0f6f09bb4846c0566628138e9c2c1
+Author: jackschnair <12jack812@gmail.com>
+Date:   Fri Aug 8 11:24:03 2025 -0400
+
+    Added played games in league to league info (including today's games)
+
+ src/getLeagueInfo/index.mjs | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+commit ad7a19b10ce218f3750adb87099bb8ac3d080a3b
+Author: James Graham <jgraham@wpi.com>
+Date:   Fri Aug 8 00:51:08 2025 -0400
+
+    Updated createGameEvent to require scorekeeper credentials and show more detail in error. Created retrievePlaybyPlay functionality. Also updated setRules and scorekeeper.html to take in the credentials and the JSON text
+
+ src/createGameEvent/index.mjs       | 195 +++++++++++++++++++++---------------
+ src/retrievePlaybyPlay/config.mjs   |   6 ++
+ src/retrievePlaybyPlay/index.mjs    | 138 +++++++++++++++++++++++++
+ src/retrievePlaybyPlay/package.json |  10 ++
+ src/setRules/index.mjs              |  26 +----
+ src/webpage/scorekeeper.html        | 105 ++++++++++++++++++-
+ 6 files changed, 373 insertions(+), 107 deletions(-)
+
+commit fe4cb612246e4814233131b01ba4f2a0d0023973
+Merge: 0430654 0118868
+Author: Graham, James  (901031018) <jgraham@wpi.edu>
+Date:   Thu Aug 7 21:34:59 2025 +0000
+
+    Merge branch 'iter3_events' into 'main'
+    
+    Created setRules and createGameEvent lambdas
+    
+    See merge request jmschnair/superior-scorekeeping!17
+
+commit 011886854c76f8f75f4815be702adb58efcde0de
+Author: jackschnair <12jack812@gmail.com>
+Date:   Thu Aug 7 17:26:03 2025 -0400
+
+    Created setRules and createGameEvent lambdas
+
+ src/createGameEvent/config.mjs   |   6 +
+ src/createGameEvent/index.mjs    | 233 +++++++++++++++++++++++++++++++++++++++
+ src/createGameEvent/package.json |   9 ++
+ src/setRules/config.mjs          |   6 +
+ src/setRules/index.mjs           | 121 ++++++++++++++++++++
+ src/setRules/package.json        |   9 ++
+ 6 files changed, 384 insertions(+)
+
+commit 0430654681a4304c37b41d20a981bbbd0f52dfef
+Author: James Graham <jgraham@wpi.com>
+Date:   Tue Aug 5 23:50:18 2025 -0400
+
+    Updating functions to check scorekeeper credentials instead of admin
+
+ src/finalizeGame/index.mjs   | 22 +++++++++++++---------
+ src/unfinalizeGame/index.mjs | 22 +++++++++++++---------
+ 2 files changed, 26 insertions(+), 18 deletions(-)
+
+commit fd9842b881f119edec4e38f9137a910bef4bf061
+Merge: 488f611 511675c
+Author: Graham, James  (901031018) <jgraham@wpi.edu>
+Date:   Wed Aug 6 03:07:14 2025 +0000
+
+    Merge branch 'iter3_retrieve_game_info' into 'main'
+    
+    Iter3 retrieve game
+    
+    See merge request jmschnair/superior-scorekeeping!16
+
+commit 488f611de584f545153b303c39653093c3e5087a
+Merge: 5d0b1f0 970a281
+Author: Graham, James  (901031018) <jgraham@wpi.edu>
+Date:   Wed Aug 6 03:06:01 2025 +0000
+
+    Merge branch 'iter3_list_games' into 'main'
+    
+    Iter3 list games
+    
+    See merge request jmschnair/superior-scorekeeping!15
+
+commit 5d0b1f0fa9913451d1d9fd52a141d248da3a7007
+Merge: f616bee d1a8102
+Author: Graham, James  (901031018) <jgraham@wpi.edu>
+Date:   Wed Aug 6 03:05:13 2025 +0000
+
+    Merge branch 'iter3_getLeagueInfo' into 'main'
+    
+    Created getLeagueInfo lambda
+    
+    See merge request jmschnair/superior-scorekeeping!13
+
+commit 511675c049519a492f9308d4deb58d5e2cfc2ee2
+Author: jackschnair <12jack812@gmail.com>
+Date:   Tue Aug 5 21:40:14 2025 -0400
+
+    Created accessReport lambda to see view counts for games and leagues
+
+ src/accessReport/config.mjs   |   6 +++
+ src/accessReport/index.mjs    | 101 ++++++++++++++++++++++++++++++++++++++++++
+ src/accessReport/package.json |   9 ++++
+ 3 files changed, 116 insertions(+)
+
+commit 406700af9082c9cd2216859b55715d2991368c1e
+Author: jackschnair <12jack812@gmail.com>
+Date:   Tue Aug 5 21:27:45 2025 -0400
+
+    Increment view count when game info is retrieved
+
+ src/retrieveGame/index.mjs | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+commit 432714c028c118584fa0e3a02891330642c8e66d
+Author: jackschnair <12jack812@gmail.com>
+Date:   Tue Aug 5 21:21:55 2025 -0400
+
+    Created retrieveGame lambda
+
+ src/retrieveGame/config.mjs   |  6 +++
+ src/retrieveGame/index.mjs    | 88 +++++++++++++++++++++++++++++++++++++++++++
+ src/retrieveGame/package.json |  9 +++++
+ 3 files changed, 103 insertions(+)
+
+commit 970a281dfa1eb832df04e94fb84bad789a13ca65
+Author: jackschnair <12jack812@gmail.com>
+Date:   Tue Aug 5 20:53:41 2025 -0400
+
+    Added league_name and league_credentials as input to listGames so it works for individual leagues
+
+ src/listGames/index.mjs        | 59 +++++++++++++++++++++++++++++++++++++-----
+ src/webpage/iteration_two.html |  8 +++---
+ src/webpage/league.html        |  8 +++---
+ 3 files changed, 63 insertions(+), 12 deletions(-)
+
+commit 37c57fab2d9ecc7f05217e240e430b860646df71
+Merge: d1a8102 f616bee
+Author: jackschnair <12jack812@gmail.com>
+Date:   Tue Aug 5 20:32:26 2025 -0400
+
+    Merge branch 'main' of https://gitlab03.wpi.edu/jmschnair/superior-scorekeeping into iter3_getLeagueInfo
+
+commit f616bee2690a6dc4b474637753f3737c282020d4
+Merge: edf553d cbf5e81
+Author: Schnair, Jack Michael (817962067) <jmschnair@wpi.edu>
+Date:   Tue Aug 5 18:34:42 2025 +0000
+
+    Merge branch 'iteration3_functions' into 'main'
+    
+    Created finalize/unfinalizeGame and unregisterScorekeeper
+    
+    See merge request jmschnair/superior-scorekeeping!14
+
+commit cbf5e81c605ce5b2cc8a17f06a6145d2a432efd8
+Author: James Graham <jgraham@wpi.com>
+Date:   Tue Aug 5 00:18:27 2025 -0400
+
+    Created finalize/unfinalizeGame and unregisterScorekeeper
+
+ src/finalizeGame/config.mjs            |   6 +
+ src/finalizeGame/index.mjs             | 116 +++++++
+ src/finalizeGame/package.json          |  10 +
+ src/git.report.txt                     | 561 +++++++++++++++++++++++++++++++++
+ src/unfinalizeGame/config.mjs          |   6 +
+ src/unfinalizeGame/index.mjs           | 116 +++++++
+ src/unfinalizeGame/package.json        |  10 +
+ src/unregisterScorekeeper/config.mjs   |   6 +
+ src/unregisterScorekeeper/index.mjs    |  87 +++++
+ src/unregisterScorekeeper/package.json |  10 +
+ 10 files changed, 928 insertions(+)
+
+commit d1a8102127af3639c212dccf53bf988c9da0b80d
+Author: jackschnair <12jack812@gmail.com>
+Date:   Mon Aug 4 20:24:32 2025 -0400
+
+    Updated getLeagueInfo lambda
+
+ src/createScorekeeper/index.mjs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit edf553de268fc49058d95c4ae891b4f867595954
+Author: jackschnair <12jack812@gmail.com>
+Date:   Mon Aug 4 20:12:12 2025 -0400
+
+    accidentally made changes on main. Going to commit and check back out on another branch
+
+ git_report.txt                  | 405 ++++++++++++++++++++++++++++++++++++++++
+ src/createScorekeeper/index.mjs |   4 +-
+ src/getLeagueInfo/config.mjs    |   6 +
+ src/getLeagueInfo/index.mjs     | 134 +++++++++++++
+ src/getLeagueInfo/package.json  |   9 +
+ 5 files changed, 556 insertions(+), 2 deletions(-)
+
+commit 9d1b5cbb6a61ebdafae32ca3b655cde4bb2f6180
+Author: Schnair, Jack Michael (817962067) <jmschnair@wpi.edu>
+Date:   Wed Jul 23 16:13:56 2025 +0000
+
+    Update README.md with new webpage link
+
+ README.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
 commit 302b63b81d510e0a67b8b1bbd41ceceb50402d9f
 Merge: fad4fa8 fed5d4d
 Author: Schnair, Jack Michael (817962067) <jmschnair@wpi.edu>

@@ -107,12 +107,12 @@ export async function handler(event) {
       body = event; // fallback for test events
     }
 
-    const { game_id, game_event } = body || {};
-    if (!game_id || !game_event) {
+    const { game_id, scorekeeperName, credentials, game_event } = body || {};
+    if (!game_id || !scorekeeperName || !credentials || !game_event) {
       return {
         statusCode: 400,
         body: JSON.stringify({ 
-          message: 'Missing required fields: game_id or game_event',
+          message: 'Missing required fields: game_id, scorekeeperName, credentials, or game_event',
           received_body: body,
           body_keys: Object.keys(body || {})
         }),
@@ -175,6 +175,24 @@ export async function handler(event) {
     }
 
     const leagueName = gameRows[0].league;
+
+    // Validate scorekeeper credentials
+    const scorekeeperRows = await queryAsync(
+      connection,
+      'SELECT * FROM scorekeepers WHERE name = ? AND credentials = ? AND league = ? AND registration_status = 1',
+      [scorekeeperName, credentials, leagueName]
+    );
+    if (!scorekeeperRows || scorekeeperRows.length === 0) {
+      connection.end();
+      return {
+        statusCode: 401,
+        body: JSON.stringify({ 
+          message: 'Invalid scorekeeper credentials or scorekeeper not registered for this league',
+          scorekeeperName,
+          league: leagueName
+        }),
+      };
+    }
 
     // Get league rules
     const leagueRows = await queryAsync(
