@@ -1,0 +1,19 @@
+{
+  "scorekeeperName": "Tommy Scores",
+  "credentials": "scores",
+  "game_id": "003",
+  "game_event": {
+    "event_type": "goal",
+    "involvedPlayers": [
+      {
+        "name": "Erling Halaand",
+        "team": "Man City",
+        "position": "Striker"
+      }
+    ],
+    "score": "1-0",
+    "total_goals": 1,
+    "goal_scored": true,
+    "minute": 31
+  }
+}

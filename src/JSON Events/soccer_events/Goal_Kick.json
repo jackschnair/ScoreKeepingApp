@@ -1,0 +1,20 @@
+{
+    "scorekeeperName": "Tommy Scores",
+    "credentials": "scores",
+    "game_id": "003",
+    "game_event": {
+      "event_type": "goal_kick",
+      "involvedPlayers": [
+        {
+          "name": "Andre Onana",
+          "team": "Man United",
+          "position": "Goalie"
+        }
+      ],
+      "score": "1-0",
+      "total_goals": 1,
+      "goal_scored": false,
+      "minute": 43
+    }
+  }
+  

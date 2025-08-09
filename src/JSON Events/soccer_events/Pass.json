@@ -1,0 +1,20 @@
+{
+    "event_type": "pass",
+    "involvedPlayers": [
+      {
+        "name": "Bruno Fernandes",
+        "team": "Man United",
+        "position": "Midfielder"
+      },
+      {
+        "name": "Marcus Rashford",
+        "team": "Man United",
+        "position": "Striker"
+      }
+    ],
+    "score": "1-0",
+    "total_goals": 1,
+    "goal_scored": false,
+    "minute": 35
+  }
+  

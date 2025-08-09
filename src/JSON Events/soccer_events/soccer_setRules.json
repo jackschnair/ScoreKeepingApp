@@ -1,0 +1,157 @@
+
+{
+    "rules": {
+      "league_name": "EPL",
+      "league_credentials": "footy",
+      "rules": {
+        "assist": {
+          "conditions": [
+            {
+              "type": "fieldComparison",
+              "fieldA": "involvedPlayers[0].team",
+              "operator": "==",
+              "fieldB": "involvedPlayers[1].team"
+            },
+            {
+              "type": "fieldComparison",
+              "fieldA": "involvedPlayers[0].name",
+              "operator": "!=",
+              "fieldB": "involvedPlayers[1].name"
+            },
+            {
+              "type": "valueComparison",
+              "field": "involvedPlayers.length",
+              "operator": "==",
+              "value": 2
+            }
+          ]
+        },
+        "foul": {
+          "conditions": [
+            {
+              "type": "fieldComparison",
+              "fieldA": "involvedPlayers[0].team",
+              "operator": "!=",
+              "fieldB": "involvedPlayers[1].team"
+            },
+            {
+              "type": "valueComparison",
+              "field": "involvedPlayers.length",
+              "operator": "==",
+              "value": 2
+            }
+          ]
+        },
+        "goal": {
+          "conditions": [
+            {
+              "type": "valueComparison",
+              "field": "goal_scored",
+              "operator": "==",
+              "value": true
+            },
+            {
+              "type": "valueComparison",
+              "field": "total_goals",
+              "operator": ">",
+              "value": 0
+            }
+          ]
+        },
+        "goal_kick": {
+          "conditions": [
+            {
+              "type": "valueComparison",
+              "field": "involvedPlayers[0].position",
+              "operator": "==",
+              "value": "Goalie"
+            }
+          ]
+        },
+        "injury": {
+          "conditions": [
+            {
+              "type": "valueComparison",
+              "field": "involvedPlayers.length",
+              "operator": "==",
+              "value": 1
+            }
+          ]
+        },
+        "pass": {
+          "conditions": [
+            {
+              "type": "fieldComparison",
+              "fieldA": "involvedPlayers[0].name",
+              "operator": "!=",
+              "fieldB": "involvedPlayers[1].name"
+            },
+            {
+              "type": "fieldComparison",
+              "fieldA": "involvedPlayers[0].team",
+              "operator": "==",
+              "fieldB": "involvedPlayers[1].team"
+            },
+            {
+              "type": "valueComparison",
+              "field": "involvedPlayers.length",
+              "operator": "==",
+              "value": 2
+            }
+          ]
+        },
+        "red_card": {
+          "conditions": [
+            {
+              "type": "valueComparison",
+              "field": "involvedPlayers.length",
+              "operator": "==",
+              "value": 1
+            }
+          ]
+        },
+        "saved_shot": {
+          "conditions": [
+            {
+              "type": "valueComparison",
+              "field": "involvedPlayers[0].position",
+              "operator": "==",
+              "value": "Goalie"
+            }
+          ]
+        },
+        "substitution": {
+          "conditions": [
+            {
+              "type": "fieldComparison",
+              "fieldA": "involvedPlayers[0].team",
+              "operator": "==",
+              "fieldB": "involvedPlayers[1].team"
+            },
+            {
+              "type": "fieldComparison",
+              "fieldA": "involvedPlayers[0].name",
+              "operator": "!=",
+              "fieldB": "involvedPlayers[1].name"
+            },
+            {
+              "type": "valueComparison",
+              "field": "involvedPlayers.length",
+              "operator": ">=",
+              "value": 2
+            }
+          ]
+        },
+        "yellow_card": {
+          "conditions": [
+            {
+              "type": "valueComparison",
+              "field": "involvedPlayers.length",
+              "operator": "==",
+              "value": 1
+            }
+          ]
+        }
+      }
+    }
+  }

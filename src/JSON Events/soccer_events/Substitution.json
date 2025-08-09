@@ -1,0 +1,25 @@
+{
+    "scorekeeperName": "Tommy Scores",
+    "credentials": "scores",
+    "game_id": "003",
+    "game_event": {
+      "event_type": "substitution",
+      "involvedPlayers": [
+        {
+          "name": "Alejandro Garnacho",
+          "team": "Man United",
+          "position": "Midfielder"
+        },
+        {
+          "name": "Pedro Neto",
+          "team": "Man United",
+          "position": "Midfield"
+        }
+      ],
+      "score": "1-0",
+      "total_goals": 1,
+      "goal_scored": false,
+      "minute": 40
+    }
+  }
+  

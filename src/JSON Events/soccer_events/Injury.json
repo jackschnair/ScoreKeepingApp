@@ -1,0 +1,20 @@
+{
+    "scorekeeperName": "Tommy Scores",
+    "credentials": "scores",
+    "game_id": "003",
+    "game_event": {
+      "event_type": "injury",
+      "involvedPlayers": [
+        {
+          "name": "Luke Shaw",
+          "team": "Man United",
+          "position": "Defender"
+        }
+      ],
+      "score": "1-0",
+      "total_goals": 1,
+      "goal_scored": false,
+      "minute": 70
+    }
+  }
+  

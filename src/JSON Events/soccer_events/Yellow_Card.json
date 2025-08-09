@@ -1,0 +1,15 @@
+{
+    "event_type": "yellow_card",
+    "involvedPlayers": [
+      {
+        "name": "Harry Maguire",
+        "team": "Man United",
+        "position": "Defender"
+      }
+    ],
+    "score": "1-0",
+    "total_goals": 1,
+    "goal_scored": false,
+    "minute": 57
+  }
+  
