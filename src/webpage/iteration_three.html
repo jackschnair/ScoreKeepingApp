@@ -267,12 +267,22 @@
     <div class="response" id="consumerAccessReportResponse"></div>
   </form>
 
+    <!-- FINALIZE GAME -->
+    <form id="finalizeGameForm">
+        <h2>Finalize Game</h2>
+        <label>Game ID: <input name="id" required /></label>
+        <label>Scorekeeper Name: <input name="scorekeeperName" required /></label>
+        <label>Scorekeeper Credentials: <input name="credentials" required /></label>
+        <label>League Name: <input name="league" required /></label>
+        <button type="submit">Finalize Game</button>
+        <div class="response" id="finalizeGameResponse"></div>
+    </form>
+
   <!-- UNFINALIZE GAME -->
   <form id="unfinalizeGameForm">
     <h2>Unfinalize Game</h2>
     <label>Game ID: <input name="id" required /></label>
-    <label>Scorekeeper Name: <input name="scorekeeperName" required /></label>
-    <label>League Credentials: <input name="credentials" required /></label>
+    <label>Admin Credentials: <input name="admin_credentials" required placeholder="password" /></label>
     <label>League Name: <input name="league" required /></label>
     <button type="submit">Unfinalize Game</button>
     <div class="response" id="unfinalizeGameResponse"></div>
@@ -308,15 +318,13 @@
     </form>
   </section>
 
-  <!-- FINALIZE GAME -->
-  <form id="finalizeGameForm">
-    <h2>Finalize Game</h2>
-    <label>Game ID: <input name="id" required /></label>
-    <label>Scorekeeper Name: <input name="scorekeeperName" required /></label>
-    <label>League Name: <input name="league" required /></label>
-    <label>League Credentials: <input name="credentials" required /></label>
-    <button type="submit">Finalize Game</button>
-    <div class="response" id="finalizeGameResponse"></div>
+
+  <!-- RETRIEVE LEAGUE INFO -->
+  <form id="retrieveLeagueInfoForm">
+    <h2>Retrieve League Info</h2>
+    <label>League Name: <input name="league_name" required /></label>
+    <button type="submit">Retrieve League Info</button>
+    <div class="response" id="retrieveLeagueInfoResponse"></div>
   </form>
 
   <!-- RETRIEVE GAME -->
@@ -372,12 +380,13 @@
     submitForm('listGamesForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/listGames', 'listGamesResponse');
     submitForm('setRulesForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/setRules', 'setRulesResponse');
     submitForm('getLeagueInfoForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/getLeagueInfo', 'getLeagueInfoResponse');
-    submitForm('unregisterScorekeeperLeagueForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/unregisterScorekeeper', 'unregisterScorekeeperLeagueResponse');
+    submitForm('unregisterScorekeeperLeagueForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/unregisterScorekeeperLeague', 'unregisterScorekeeperLeagueResponse');
     submitForm('unregisterScorekeeperAdminForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/unregisterScorekeeper', 'unregisterScorekeeperAdminResponse');
     submitForm('consumerAccessReportForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/accessReport', 'consumerAccessReportResponse');
     submitForm('unfinalizeGameForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/unfinalizeGame', 'unfinalizeGameResponse');
     submitForm('createGameEventForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/createGameEvent', 'createGameEventResponse');
     submitForm('finalizeGameForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/finalizeGame', 'finalizeGameResponse');
+    submitForm('retrieveLeagueInfoForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/retrieveLeagueInfo', 'retrieveLeagueInfoResponse');
     submitForm('retrieveGameForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/retrieveGame', 'retrieveGameResponse');
     submitForm('retrievePlaybyPlayForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/retrievePlaybyPlay', 'retrievePlaybyPlayResponse');
   </script>

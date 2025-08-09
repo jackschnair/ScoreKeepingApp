@@ -68,6 +68,12 @@
       font-size: 20px;
       font-weight: bold;
     }
+    
+    form { margin-bottom: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+    label { display: block; margin-top: 10px; }
+    input, select { width: 300px; padding: 5px; }
+    button { margin-top: 15px; padding: 10px 20px; }
+    .response { margin-top: 10px; font-weight: bold; color: #444; }
   </style>
 </head>
 <body>
@@ -92,10 +98,67 @@
 
   <h1>Consumer use cases</h1>
 
+  <!-- RETRIEVE LEAGUE INFO -->
+  <form id="retrieveLeagueInfoForm">
+    <h2>Retrieve League Info</h2>
+    <label>League Name: <input name="league_name" required /></label>
+    <button type="submit">Retrieve League Info</button>
+    <div class="response" id="retrieveLeagueInfoResponse"></div>
+  </form>
 
-  <p style="font-size: 16px; line-height: 1.6; color: #555; margin-bottom: 30px;">
-    We do not yet have any consumer use cases.
-  </p>
+  <!-- RETRIEVE GAME -->
+  <form id="retrieveGameForm">
+    <h2>Retrieve Game Info</h2>
+    <label>League Name: <input name="league_name" required /></label>
+    <label>Game ID: <input name="game_id" required /></label>
+    <button type="submit">Retrieve Game</button>
+    <div class="response" id="retrieveGameResponse"></div>
+  </form>
 
+  <!-- RETRIEVE PLAY-BY-PLAY -->
+  <form id="retrievePlaybyPlayForm">
+    <h2>Retrieve Play-by-Play Game Info</h2>
+    <label>League: <input name="league" required /></label>
+    <label>Game ID: <input name="game_id" required /></label>
+    <button type="submit">Retrieve Play-by-Play</button>
+    <div class="response" id="retrievePlaybyPlayResponse"></div>
+  </form>
+
+  <script>
+    async function submitForm(formId, apiUrl, responseId, method = 'POST') {
+      const form = document.getElementById(formId);
+      const responseDiv = document.getElementById(responseId);
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+          let requestOptions = {
+            method: method,
+            headers: { 'Content-Type': 'application/json' }
+          };
+          
+          // For GET requests, don't send a body
+          if (method !== 'GET' && Object.keys(data).length > 0) {
+            requestOptions.body = JSON.stringify(data);
+          }
+
+          const res = await fetch(apiUrl, requestOptions);
+
+          const result = await res.json();
+          responseDiv.textContent = JSON.stringify(result, null, 2);
+        } catch (err) {
+          responseDiv.textContent = `Error: ${err.message}`;
+        }
+      });
+    }
+
+    // Hook each form to its placeholder API URL
+    submitForm('retrieveLeagueInfoForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/retrieveLeagueInfo', 'retrieveLeagueInfoResponse');
+    submitForm('retrieveGameForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/retrieveGame', 'retrieveGameResponse');
+    submitForm('retrievePlaybyPlayForm', 'https://aa3l6r7gl3.execute-api.us-east-2.amazonaws.com/Scorekeeping/retrievePlaybyPlay', 'retrievePlaybyPlayResponse');
+  </script>
 </body>
 </html> 
