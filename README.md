@@ -8,15 +8,27 @@ Admin password is "password".
 
 JSON events can be found in /src/JSON Events in the repository. 
 
-Note that when pasting JSON into our "setRules" or "createGameEvent" use cases on the webpage you should only include the JSON that follows "game_event". 
+Note that when pasting JSON into our "setRules" or "createGameEvent" use cases on the webpage you should only include the JSON that follows "rules" for "setRules" and "game_event" for "createGameEvent"
 
-ex: {
+setRules example:
+{
+  "league_name": "MLB",
+  "league_credentials": "pass",
+  "rules": **{
+      ...
+  }**
+
+}
+
+createGameEvent example:
+{
   "scorekeeperName": "Jack Schnair",
   "credentials": "password",
   "game_id": "22",
-  "game_event": {
+  "game_event": **{
     ...
-  }
+  }**
+
 }
 
 Just include the {...} part in the json input textbox.
