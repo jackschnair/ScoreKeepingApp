@@ -10,19 +10,19 @@
         {
           "name": "Bruno Fernandes",
           "team": "Red Sox",
-          "position": "Pitcher"
+          "position": "batter"
         },
         {
           "name": "Reece James",
           "team": "Yankees",
-          "position": "Batter"
+          "position": "Pitcher"
         }
       ],
       "inning": 5,
       "half": "Top",
       "home_score": 5,
       "away_score": 3,
-      "outs": 1,
+      "outs": 0,
       "runners": 3,
       "runs_on_play": 0
     }
