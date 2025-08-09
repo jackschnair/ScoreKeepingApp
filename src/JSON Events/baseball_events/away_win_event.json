@@ -1,0 +1,29 @@
+{
+    "scorekeeperName" : "Jack Schnair",
+    "credentials" : "pass",
+    "game_id": "001",
+    "game_event": {
+      "event_type": "away_win",
+      "balls": 3,
+      "strikes": 2,
+      "involvedPlayers": [
+        {
+          "name": "Bruno Fernandes",
+          "team": "Yankees",
+          "position": "pitcher"
+        },
+        {
+          "name": "Reece James",
+          "team": "Yankees",
+          "position": "Pitcher"
+        }
+      ],
+      "inning": 10,
+      "half": "bottom",
+      "home_score": 5,
+      "away_score": 7,
+      "outs": 3,
+      "runners": 3,
+      "runs_on_play": 1
+    }
+  }

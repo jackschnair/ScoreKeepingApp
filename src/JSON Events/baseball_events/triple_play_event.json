@@ -1,0 +1,29 @@
+{
+    "scorekeeperName": "Jack Schnair",
+    "credentials": "pass",
+    "game_id": "001",
+    "game_event": {
+      "event_type": "triple_play",
+      "balls": 3,
+      "strikes": 2,
+      "involvedPlayers": [
+        {
+          "name": "Bruno Fernandes",
+          "team": "Red Sox",
+          "position": "batter"
+        },
+        {
+          "name": "Reece James",
+          "team": "Yankees",
+          "position": "Pitcher"
+        }
+      ],
+      "inning": 5,
+      "half": "Top",
+      "home_score": 5,
+      "away_score": 3,
+      "outs": 0,
+      "runners": 3,
+      "runs_on_play": 0
+    }
+  }
