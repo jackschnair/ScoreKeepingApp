@@ -1,0 +1,20 @@
+[
+    {
+        "Game ID": "001", 
+        "League":"MLB", 
+        "League Credentials":"league_password",
+        "Home Team":"New York Mets",
+        "Away Team": "New York Yankees", 
+        "Location":"Yankee Stadium",
+        "Date and Time":"2025-07-23 10:30:00"
+    },
+    {
+        "Game ID": "001", 
+        "League":"EPL", 
+        "League Credentials":"footy",
+        "Home Team":"Manchester City",
+        "Away Team": "Arsenal", 
+        "Location":"Emirates Stadium",
+        "Date and Time":"2025-07-31 16:30:00"
+    }
+]

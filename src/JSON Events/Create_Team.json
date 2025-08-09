@@ -1,0 +1,26 @@
+[
+    {
+        "Team Name": "New York Yankees",
+        "League":"MLB", 
+        "Location":"Yankee Stadium",
+        "League Credentials":"league_password"
+    },
+    {
+        "Team Name": "New York Mets",
+        "League":"MLB", 
+        "Location":"Citi Field",
+        "League Credentials":"league_password"
+    },
+    {
+        "Team Name": "Manchester City",
+        "League":"EPL", 
+        "Location":"Etihad Stadium",
+        "League Credentials":"footy"
+    },
+    {
+        "Team Name": "Arsenal",
+        "League":"EPL", 
+        "Location":"Emirates Stadium",
+        "League Credentials":"footy"
+    }
+]

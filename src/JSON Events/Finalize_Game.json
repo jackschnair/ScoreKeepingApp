@@ -1,0 +1,14 @@
+[
+    {
+        "id": "001",
+        "scorekeeperName": "Jimmy Counts",
+        "league": "MLB",
+        "credentials": "counts"
+    },
+    {
+        "id": "001",
+        "scorekeeperName": "Tommy Scores",
+        "league": "EPL",
+        "credentials": "scores"
+    }
+]

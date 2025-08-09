@@ -1,0 +1,13 @@
+[ 
+    {
+        "Scorekeeper Name":"Jimmy Counts",
+        "Scorekeeper Credentials":"counts",
+        "League":"MLB",
+        "League Credentials":"league_password"},
+    {
+        "Scorekeeper Name":"Tommy Scores",
+        "Scorekeeper Credentials":"scores",
+        "League":"EPL",
+        "League Credentials":"footy"
+    }
+]
