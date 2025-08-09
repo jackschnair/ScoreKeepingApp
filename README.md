@@ -2,7 +2,22 @@ Jack Schnair and James Graham's Scorekeeping Project for Design of Software Syst
 
 Once you check out this repository, enter the command 'npm install' to properly install all dependencies.
 
+Webpage can be found here: https://superiorscorekeeping.s3.us-east-2.amazonaws.com/interface.html
+
 Admin password is "password".
+
+Note that when pasting JSON into our "setRules" or "createGameEvent" use cases on the webpage you should only include the JSON that follows "game_event". 
+
+ex: {
+  "scorekeeperName": "Jack Schnair",
+  "credentials": "password",
+  "game_id": "22",
+  "game_event": {
+    ...
+  }
+}
+
+Just include the {...} part in the json input textbox.
 
 Our twelve use cases for Iteration 3:
 
