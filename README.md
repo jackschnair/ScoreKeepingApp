@@ -6,6 +6,8 @@ Webpage can be found here: https://superiorscorekeeping.s3.us-east-2.amazonaws.c
 
 Admin password is "password".
 
+JSON events can be found in /src/JSON Events in the repository. 
+
 Note that when pasting JSON into our "setRules" or "createGameEvent" use cases on the webpage you should only include the JSON that follows "game_event". 
 
 ex: {
