@@ -65,5 +65,3 @@ Our six use cases for Iteration 1:
 6. Register Scorekeeper
 
 URL for the landing page: https://superiorscorekeeping.s3.us-east-2.amazonaws.com/interface.html
-
-Cursor and chatGPT prompts we used are found in prompts.txt
